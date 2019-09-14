@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1><a href="/login">back</a></h1>
+    <h1>Register your Username </h1>
+        {% if message %}
+            <div class="alert alert-warning">{{ message }}</div>
+        {% endif %}
+        <form action="/Register.html/" method="post">
+
+            <h1></h1>
+            <h1>password:<input type="password" name="login_Pw"></h1>
+            <h1>second password:<input type="password" name="login_Pw2"></h1>
+            <h1>phone:<input type="text" name="phone_No"></h1>
+            <h1><input type="submit" value="sign up"></h1>
+        </form>
+        {% for i in exist_user_list %}
+            <h1>{{i.login_user_name}}-{{i.phone_No}}</h1>
+        {% endfor %}
+</body>
+</html>

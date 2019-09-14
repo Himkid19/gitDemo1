@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    {% extends "base.html" %}
+    {% block content %}
+    {% if err_msg %}
+        <div class="alert alert-warning">{{ err_msg }}</div>
+    {% endif %}
+    <form action="/test/" method="post">
+        <input name="username" type="text">
+        <input name="password" type="password">
+        <input type="submit">
+    </form>
+
+<!--    <input type="text" id="input_b">-->
+<!--    <button id="test_b">up</button>-->
+<!--    <p id="display"></p>-->
+
+<!--    <script>-->
+<!--        $(document).ready(function(){-->
+
+<!--            $("#test_b").click(function(){-->
+<!--                $.ajax({-->
+<!--                    url:"/test/",-->
+<!--                    data:{"status":status ,"name":"123","email":$("#input_b").val()},-->
+<!--                    type:"POST",-->
+<!--                    dataType:"json",-->
+<!--                    error:function(error){-->
+<!--                        console.log(error)-->
+<!--                    },-->
+<!--                    success:function(ret){-->
+<!--                        console.log(ret);-->
+<!--                    },-->
+<!--                })-->
+<!--            })-->
+<!--        })-->
+<!--    </script>-->
+{% endblock content%}
+</body>
+</html>

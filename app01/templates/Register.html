@@ -1,0 +1,47 @@
+
+{% extends "base.html" %}
+{% block title %}login
+{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <div class="col-md-4 col-md-offset-4">
+          <form class='form-register' action="/Register.html/" method="post">
+
+              {% if msg %}
+                  <div class="alert alert-warning">{{ msg }}</div>
+              {% endif %}
+
+              {% csrf_token %}
+
+              <h2 class="text-center">欢迎注册</h2>
+              <div class="form-group">
+                  {{register.Username.label_tag}}
+                  {{register.Username}}
+              </div>
+              <div class="form-group">
+                  {{register.PW.label_tag}}
+                  {{register.PW}}
+              </div>
+              <div class="form-group">
+                  {{register.PW2.label_tag}}
+                  {{register.PW2}}
+              </div>
+              <div class="form-group">
+                    {{register.phone.label_tag}}
+                  {{register.phone}}
+              </div>
+              <div class="form-group">
+
+              </div>
+              <div class="form-group">
+
+              </div>
+
+              <button type="reset" class="btn btn-default pull-left">重置</button>
+              <button type="submit" class="btn btn-primary pull-right">提交</button>
+
+          </form>
+        </div>
+    </div>
+{% endblock content %}
