@@ -20,9 +20,11 @@ from blog.views import login_2
 from django.conf.urls import url,include
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', login_2.login),
+    path('login.html/', login_2.login),
     path('Register.html/',login_2.Register ),
     path('index.html/',login_2.index),
+    path('test.html/',login_2.test),
+    path('log_out/',login_2.log_out),
     url(r'^captcha', include('captcha.urls'))
 
 ]

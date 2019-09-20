@@ -30,7 +30,7 @@ def Register(request):
                 User_Info.objects.create(login_user_name=username,
                                          login_Pw=PW,
                                          phone_No=phone,)
-                return redirect("/login/")
+                return redirect("/login.html/")
         else:
             if register.is_valid()==None:
                 msg = "message can't be empty!"
@@ -38,9 +38,49 @@ def Register(request):
             else:
                 return render(request,"Register.html")
 def login(request):
-    exist_user_list = User_Info.objects.all()
-    return render(request,"login.html",locals())
+    if request.method == "GET":
+        login = form.login_check()
+        exist_user_list = User_Info.objects.all()
+        return render(request,"login.html",locals())
+    if request.method == "POST":
+        login = form.login_check(request.POST)
+        if login.is_valid():
+            username = login.cleaned_data["Username"]
+            password = login.cleaned_data["PW"]
+            is_username = User_Info.objects.filter(login_user_name=username)
+            if is_username:
+                is_username = User_Info.objects.get(login_user_name = username)
+                is_PW = is_username.login_Pw
+                print(is_PW)
+                if is_PW == password:
+                    request.session['is_login'] = True
+                    request.session['id'] = is_username.id
+                    request.session['username'] = username
+                    return redirect("/index.html/")
+                else:
+                    msg ="password is wrong !"
+                    return render(request,"login.html",locals())
+            else:
+                msg = "this username is not exist"
+                return render(request,"login.html",locals())
+        else:
+            msg = "random code is wrong "
+            return render(request,"login.html",locals())
+
+
 def index(request):
-    return render(request,"index.html")
+    if request.session.get('is_login')==True:
+        master = request.session.get('username')
+
+        return render(request,"index.html",locals())
+    else:
+        master = "游客"
+        return render(request,"index.html",locals())
+
 def log_out(request):
-    return render(request,"index.html")
+    if request.session['is_login']:
+        request.session.flush()
+        return render(request,"index.html")
+def test(requset):
+    login = form.login_check()
+    return render(requset,"TEST.html",locals())

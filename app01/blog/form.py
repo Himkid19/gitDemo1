@@ -8,6 +8,12 @@ class Register(forms.Form):
     phone = forms.CharField(max_length=60,widget=forms.TextInput(attrs={'class': 'form-control'}),label="phone")
 
 class login_check(forms.Form):
-    Username = forms.CharField(max_length=60,required=True)
-    PW = forms.CharField(max_length=60,required=True,widget=forms.PasswordInput)
+    Username = forms.CharField(max_length=60,required=True,error_messages={'required':"it can't be none "},widget=forms.TextInput(attrs={'placeholder':'Username',
+                                                                                         'name':'text1',
+                                                                                         'id':'text1',
+                                                                                         }))
+    PW = forms.CharField(max_length=60,required=True,widget=forms.PasswordInput(attrs={'placeholder':'Password'
+                                                                                       ,'name':'password',
+                                                                                       'id':'myInput',}
+                                                                                ))
     random_code = CaptchaField(label="验证码")
