@@ -5,6 +5,9 @@
     <title>Title</title>
 </head>
 <body>
+    {% for i in user_list %}
+        {{i.user.username}}-{{i.user.password}}
+    {% endfor %}
 
 </body>
 </html>

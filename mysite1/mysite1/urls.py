@@ -15,7 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from blog2 import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('register/', views.register),
+    path('login/', views.login),
+    path('log_out/', views.log_out),
+    path('reset_pw/', views.reset_pw),
+
 ]
