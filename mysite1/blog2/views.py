@@ -15,7 +15,7 @@ def register(request):
 
             user = User.objects.create_user(username=username,password=password2)
             user_profile = UserProfile(user=user,telephone = telephone)
-        return redirect('/login/')
+            return redirect('/login/')
     else:
         register = RegisterForm()
     return render(request,'Register.html',locals())
