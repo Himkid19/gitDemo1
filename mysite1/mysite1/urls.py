@@ -15,13 +15,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from blog2 import views
+from blog2.Views import views,Rental_page
+from django.conf.urls import url,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', views.register),
     path('login/', views.login),
     path('log_out/', views.log_out),
-    path('reset_pw/', views.reset_pw),
+    path('index/reset_pw/', views.reset_pw),
+    path('forget_pw/', views.forget_password),
+    path('index/', views.index),
+    path('index/house_list', Rental_page.display_house_list),
+    url(r'^index/house_list/detail/(\d+)/$', Rental_page.house_detail,name = 'detail'),
+
+
+    url(r'^captcha', include('captcha.urls')),
 
 ]
