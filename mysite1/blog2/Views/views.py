@@ -19,6 +19,12 @@ def register(request):
 
             user = User.objects.create_user(username=username,password=password2)
             user_profile = UserProfile(user=user,telephone = telephone)
+            user_group = auth.authenticate(username=username,password=password2)
+            group = Group.objects.get(name='游客')
+            user_group.groups.add(group)
+
+            #   another writer
+            # group.user_set.add(user)
             return redirect('/login/')
     else:
         register = RegisterForm()

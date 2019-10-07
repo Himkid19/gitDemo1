@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+{% block content%}
+{% for i in users %}
+<div class="waiting_list">
+    <table class="table table-hover">
+            <thead>
+                <tr>
+
+                    <th>username</th>
+                    <th>status</th>
+                    <th>edit</th>
+                </tr>
+            <tbody>
+                <tr>
+                   <th>{{i.username}}</a></th>
+                   <th>{{Groups_display}}</th>
+                    <th><a href="/index/audit_pass%p={{i.id}}">审核</a></th>
+
+                </tr>
+            </tbody>
+            </thead>
+        </table>
+</div>
+    {% endfor %}
+{% for i in r_users %}
+<div class="already_list">
+    <table class="table table-hover">
+            <thead>
+                <tr>
+
+                    <th>username</th>
+                    <th>status</th>
+                    <th>edit</th>
+                </tr>
+            <tbody>
+                <tr>
+                   <th>{{i.username}}</a></th>
+                   <th>{{r_display}}</th>
+                    <th><a href="#">del</a></th>
+
+                </tr>
+            </tbody>
+            </thead>
+        </table>
+</div>
+{% endfor %}
+{% endblock content%}

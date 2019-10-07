@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from blog2.Views import views,Rental_page
+from blog2.Views import views,Rental_page,owner_page
 from django.conf.urls import url,include
 
 urlpatterns = [
@@ -27,6 +27,8 @@ urlpatterns = [
     path('forget_pw/', views.forget_password),
     path('index/', views.index),
     path('index/house_list', Rental_page.display_house_list),
+    path('index/waiting_list',owner_page.Waiting_Audit_Info),
+    path('index/audit_pass',owner_page.Audit_tenant_Info),
     url(r'^index/house_list/detail/(\d+)/$', Rental_page.house_detail,name = 'detail'),
 
 
