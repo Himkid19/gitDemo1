@@ -14,7 +14,7 @@
                 <tr>
                    <th>{{i.username}}</a></th>
                    <th>{{Groups_display}}</th>
-                    <th><a href="/index/audit_pass%p={{i.id}}">审核</a></th>
+                    <th><a href="{% url 'audit_pass' i.id %}">审核</a></th>
 
                 </tr>
             </tbody>

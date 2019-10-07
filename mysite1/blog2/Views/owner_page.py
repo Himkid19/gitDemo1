@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from blog2.models import UserProfile,User,Group
 
+
 # 待审核列表
 def Waiting_Audit_Info(request):
     v_Groups = Group.objects.get(name='游客')
@@ -12,10 +13,9 @@ def Waiting_Audit_Info(request):
     r_display = str(r_Groups)
     return render(request,'waiting_audit_info.html',locals())
 # 审核租客信息
-def Audit_tenant_Info(request):
-    username = request.POST.get('username')
+def Audit_tenant_Info(request,id):
+    Group.objects.filter(user=id).update(name='租客')
 
-    Group.objects.filter(user=username).update(name='租客')
     return redirect('/index/waiting_list')
 def set_count(request):
     pass

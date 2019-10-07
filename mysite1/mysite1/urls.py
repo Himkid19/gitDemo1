@@ -28,7 +28,7 @@ urlpatterns = [
     path('index/', views.index),
     path('index/house_list', Rental_page.display_house_list),
     path('index/waiting_list',owner_page.Waiting_Audit_Info),
-    path('index/audit_pass',owner_page.Audit_tenant_Info),
+    url(r'^index/waiting_list/audit_pass/(\d+)/$', owner_page.Audit_tenant_Info,name='audit_pass'),
     url(r'^index/house_list/detail/(\d+)/$', Rental_page.house_detail,name = 'detail'),
 
 
