@@ -6,7 +6,7 @@ class House_display(admin.ModelAdmin):
 
 
 class rate_display(admin.ModelAdmin):
-    list_display = ['user','house_no','payment_status']
+    list_display = ['house_no','payment_status','create_time','last_time']
 
 
 admin.site.register(UserProfile)

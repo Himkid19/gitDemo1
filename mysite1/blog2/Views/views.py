@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,render_to_response
 from blog2.form import RegisterForm,LoginForm,Re_set,forget_PW
 from django.contrib.auth.models import User,Group
 from blog2.models import UserProfile
@@ -15,9 +15,10 @@ def register(request):
             telephone = register.cleaned_data.get('telephone')
             password = register.cleaned_data.get('password')
             password2 = register.cleaned_data.get('password2')
-            print(password,password2)
+
 
             user = User.objects.create_user(username=username,password=password2)
+            UserProfile.objects.create(user=user,telephone=telephone)
             user_profile = UserProfile(user=user,telephone = telephone)
             user_group = auth.authenticate(username=username,password=password2)
             group = Group.objects.get(name='游客')
@@ -55,22 +56,10 @@ def login(request):
 
 def index(request):
     if request.user.is_authenticated:
-
-        master = request.user.username
-
-        current_user = request.user
-
-        try:
-            groups = Group.objects.get(user=current_user)
-        except models.ObjectDoesNotExist:
-            return render(request,'index.html',locals())
-        else:
-            groups = str(groups)
-            request.session['groups'] =groups
-            return render(request,'index.html',locals())
+        return render(request,'index.html')
     else:
         return redirect("/login/")
-    return render(request,'index.html',locals())
+    return render(request,'index.html')
 
 def log_out(request):
     if request.user.is_authenticated:

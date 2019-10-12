@@ -12,6 +12,8 @@
       <sourceFolder url="file://$MODULE_DIR$/mysite1/blog2" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/mysite1/mysite1" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/mysite1/templates2" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/mysite1/blog2/Views" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/mysite1/static" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

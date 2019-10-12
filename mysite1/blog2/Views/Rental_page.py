@@ -2,10 +2,10 @@ from django.shortcuts import render,redirect,HttpResponse
 from blog2.models import HouseInfo
 from django.contrib.auth.models import User,Group
 
-def display_house_list(requset):
+def display_house_list(request):
     house_list = HouseInfo.objects.all()
-    User_group = Group.objects.get()
-    return render(requset,'house_msg_list.html',locals())
+
+    return render(request,'house_msg_list.html',locals())
 
 def house_detail(request,id):
     detail = HouseInfo.objects.get(id=id)
