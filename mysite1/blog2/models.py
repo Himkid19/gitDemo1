@@ -46,6 +46,7 @@ class monthly_pay(models.Model):
     house_no = models.ForeignKey(HouseInfo,to_field="house_no",on_delete=models.CASCADE,default=None)
     payment_choice =(('0','未支付/欠费'),('1','已支付'),('2','异常'))
     payment_status = models.CharField(verbose_name='支付状态',choices=payment_choice,max_length=3,default='0')
+    total = models.CharField(verbose_name='总金额',max_length=30,default='0')
 
     def __str__(self):
         return self.house_no.__str__()

@@ -15,8 +15,6 @@ def register(request):
             telephone = register.cleaned_data.get('telephone')
             password = register.cleaned_data.get('password')
             password2 = register.cleaned_data.get('password2')
-
-
             user = User.objects.create_user(username=username,password=password2)
             UserProfile.objects.create(user=user,telephone=telephone)
             user_profile = UserProfile(user=user,telephone = telephone)

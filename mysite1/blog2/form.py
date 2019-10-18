@@ -98,4 +98,10 @@ class forget_PW(forms.Form):
         return new_password2
 
 
+class set_count(forms.Form):
+    water_rate = forms.CharField(label='水费',max_length=30,widget=forms.NumberInput(attrs={'class':'form-control','id':'set-count-form','placeholder':'please input your water rate'}))
+    power_rate = forms.CharField(label='电费',max_length=30,widget=forms.NumberInput(attrs={'class':'form-control','id':'set-count-form','placeholder':'please input your power rate'}))
+    house_rent = forms.CharField(label='房费',max_length=32,widget=forms.NumberInput(attrs={'class':'form-control','id':'set-count-form','placeholder':'please input your house rent'}))
+    else_rate = forms.CharField(label='其他费用',max_length=32,widget=forms.NumberInput(attrs={'class':'form-control','id':'set-count-form','placeholder':'please input your else rate'}))
+    remark = forms.CharField(label='备注其他费用',max_length=32,widget=forms.Textarea(attrs={'class':'form-control','id':'else-form','placeholder':'please input your remark'}))
 

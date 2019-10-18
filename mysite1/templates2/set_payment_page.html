@@ -2,38 +2,63 @@
 {% block content %}
 <style>
     .form-control{
-        with
+        width:100px;
     }
+    textarea.form-control{
+        width:500px;
+        height:100px;
+    }
+
 </style>
+
     <h1>set payment</h1>
-    <p>{{payment.house_rent}}</p>
-    <form class="form-horizontal">
-  <div class="form-group">
-    <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+    <p>{{house_no}}</p>
+
+<form class="form-horizontal" method="post">
+
+    {% csrf_token %}
+    {% for i in count_set %}
+    {% if i.errors %}
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Warning!</strong> {{i.errors}}
+        </div>
+    {% endif %}
+    <div class="form-group">
+    <label for="set-count-form" class="col-sm-2 control-label">{{i.label_tag}}</label>
     <div class="col-sm-10">
-      <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+        {{i}}
     </div>
   </div>
-  <div class="form-group">
-    <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
-    <div class="col-sm-10">
-      <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
-    </div>
-  </div>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <div class="checkbox">
-        <label>
-          <input type="checkbox"> Remember me
-        </label>
-      </div>
-    </div>
-  </div>
+    {% endfor %}
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
       <button type="submit" class="btn btn-default">Sign in</button>
     </div>
   </div>
+
 </form>
+<h1>History</h1>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>总金额</th>
+      <th>当前状态</th>
+      <th>创建时间</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+    {% for i in count_setting_record %}
+  <tbody>
+    <th>{{i.total}}</th>
+    <th>{{i.get_payment_status_display}}</th>
+    <th>{{i.create_time}}</th>
+    <th><a href="{% url 'del_record' id=i.id house_no=house_no %}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></th>
+  </tbody>
+    {% endfor %}
+</table>
+<script>
+
+</script>
 
 {% endblock content%}

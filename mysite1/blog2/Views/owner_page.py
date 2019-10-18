@@ -1,10 +1,12 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,HttpResponse,HttpResponseRedirect
 from blog2.models import UserProfile,monthly_pay,HouseInfo
 from django.contrib.auth.models import User,Group
 from datetime import datetime
+from blog2.form import set_count
 
 # 待审核列表
 def Waiting_Audit_Info(request):
+
     v_Groups = Group.objects.get(name='游客')
     users = v_Groups.user_set.all()
     phone_list = []
@@ -37,15 +39,37 @@ def del_rental_Info(request,id):
     return redirect('/index/waiting_list')
 def choice_count(request):
     house_list = HouseInfo.objects.all()
-
     return render(request,'choice_payment_page.html',locals())
 
-def set_count(request,house_no):
+
+def setting_count_page(request,house_no):
+    if request.method == 'POST':
+        count_set = set_count(request.POST)
+        if count_set.is_valid():
+            water_rate = int(count_set.cleaned_data.get('water_rate'))
+            power_rate = int(count_set.cleaned_data.get('power_rate'))
+            house_rent = int(count_set.cleaned_data.get('house_rent'))
+            else_rate = int(count_set.cleaned_data.get('else_rate'))
+            remark = count_set.cleaned_data.get('remark')
+            total = 0
+            total = water_rate + power_rate + house_rent + else_rate
+            print(total)
+            count_dict = count_set.cleaned_data
+            house_no_obj = HouseInfo.objects.get(house_no=house_no)
+            try:
+                monthly_pay.objects.create(**count_dict,house_no=house_no_obj,total=total)
+                print('create success')
+            except Exception as e:
+                print(e)
+            return redirect('/index/choice_payment/set_payment/house_no='+house_no)
+    else:
+        count_set = set_count()
     try:
-        payment = monthly_pay.objects.get(house_no=house_no)
+        count_setting_record = monthly_pay.objects.filter(house_no=house_no)
     except Exception as e:
         print(e)
-
-    print(payment.create_time,payment.last_time)
-
     return render(request,'set_payment_page.html',locals())
+
+def delete_rate_record(request,id,house_no):
+    monthly_pay.objects.filter(id=id).delete()
+    return redirect('/index/choice_payment/set_payment/house_no='+house_no)
