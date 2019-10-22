@@ -23,7 +23,7 @@ class HouseInfo(models.Model):
     width = models.CharField(verbose_name="大小",max_length=10)
     height = models.CharField(verbose_name="高",max_length=10)
     direction = models.CharField(verbose_name="描述",max_length=256)
-    user = models.ForeignKey("UserProfile",verbose_name="所属用户",on_delete=models.CASCADE,null=True,blank=True,)
+    user = models.ForeignKey(User,verbose_name="所属用户",on_delete=models.CASCADE,null=True,blank=True,)
     house_status = (
         ('0',"闲置"),('1',"已售"),('2',"其他")
     )

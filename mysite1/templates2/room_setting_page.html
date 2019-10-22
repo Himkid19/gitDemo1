@@ -1,0 +1,49 @@
+{% extends 'index.html' %}
+{% block content %}
+<style>
+    .house-list-display{
+        margin:20px 50px 50px;
+    }
+    .modal-content {
+    position: relative;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 6px;
+    outline: 0;
+    }
+</style>
+<div class="house-list-display">
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th>序号</th>
+                <th>房号</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in house_gather %}
+                {% if i.status == '0' %}
+                    <tr class="info">
+                {% else %}
+                    <tr class="success">
+                {% endif %}
+
+                    <th>{{forloop.counter}}</th>
+                    <th><a href="{% url 'edit_info' house_no=i.house_no %}">{{i.house_no}}</a></th>
+                    <th>{{i.get_status_display}}</th>
+                    <th></th>
+                    </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+<div>
+
+</div>
+
+
+{% endblock content %}

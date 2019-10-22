@@ -13,9 +13,10 @@
             </thead>
             <tbody>
                 {% for i in house_list %}
+                <tr>
                     <th>{{forloop.counter}}</th>
                     <th>{{i.house_no}}</th>
-                    <th>{{i.user.user}}</th>
+                    <th>{{i.user.username}}</th>
                     <th>{{i.get_status_display}}</th>
                     <th><div class="btn-group">
                           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -28,6 +29,8 @@
                           </ul>
                         </div>
                     </th>
+                </tr>
+
                 {% endfor %}
             </tbody>
 

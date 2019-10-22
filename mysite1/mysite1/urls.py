@@ -18,22 +18,11 @@ from django.urls import path
 from blog2.Views import views,Rental_page,owner_page
 from django.conf.urls import url,include
 
-#owner page gather urls
+
 urlpatterns = [
     path('index/waiting_list',owner_page.Waiting_Audit_Info),
     path('index/choice_payment',owner_page.choice_count),
-    url(r'^index/choice_payment/set_payment/house_no=(?P<house_no>\d+)',owner_page.setting_count_page,name='set_payment'),
-    url(r'^index/choice_payment/set_payment/del_record/id=(?P<id>\d+)&house_no=(?P<house_no>\d+)',owner_page.delete_rate_record,name='del_record'),
-    url(r'^index/waiting_list/audit_pass/(\d+)/$', owner_page.Audit_tenant_Info,name='audit_pass'),
-    url(r'^index/waiting_list/del/(\d+)/$', owner_page.del_rental_Info,name='del'),
-
-
-
-]
-
-# login register
-urlpatterns = [
-path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('register/', views.register),
     path('login/', views.login),
     path('log_out/', views.log_out),
@@ -41,12 +30,18 @@ path('admin/', admin.site.urls),
     path('forget_pw/', views.forget_password),
     path('index/',views.index),
     url(r'^captcha', include('captcha.urls')),
-]
-
-
-# rental page gather urls
-urlpatterns = [
     path('index/house_list', Rental_page.display_house_list),
-    path('/index/my_payment', Rental_page.my_paying_for),
+    path('index/my_payment', Rental_page.my_paying_for),
     url(r'^index/house_list/detail/(\d+)/$', Rental_page.house_detail,name = 'detail'),
+    url(r'^index/choice_payment/set_payment/house_no=(?P<house_no>\d+)', owner_page.setting_count_page,
+        name='set_payment'),
+    url(r'^index/choice_payment/set_payment/del_record/id=(?P<id>\d+)&house_no=(?P<house_no>\d+)',
+        owner_page.delete_rate_record, name='del_record'),
+    url(r'^index/waiting_list/audit_pass/(\d+)/$', owner_page.Audit_tenant_Info, name='audit_pass'),
+    url(r'^index/waiting_list/del/(\d+)/$', owner_page.del_rental_Info, name='del'),
+    path('index/room_setting', owner_page.Room_setting_page),
+    url(r'^index/room_setting/edit_info_page/house_no=(?P<house_no>\d+)',owner_page.Edit_Info_page,name='edit_info'),
+
 ]
+
+

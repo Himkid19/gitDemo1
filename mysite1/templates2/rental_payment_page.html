@@ -1,0 +1,55 @@
+{% extends 'index.html' %}
+{% block content %}
+    <style>
+        .payment-content{
+            height:400px;
+            border:1px solid;
+            margin:20px 50px 50px;
+
+        }
+        .display-text{
+            text-align:center;
+            margin-top:135px;
+        }
+        .payment-history{
+            margin:20px 50px 50px;
+            border:1px solid;
+        }
+    </style>
+    {% if msg %}
+    <div></div><div class="alert alert-danger" role="alert">
+        <a href="#" class="alert-link">{{msg}}</a>
+    </div>
+    {% endif %}
+    <div class="payment-content">
+        <div class="tips-data-lost">
+            {% if payment_check and payment_check.payment_status == '0' %}
+            <div>{{payment_check.total}}-{{payment_check.get_payment_status_display}}</div>
+            {% else %}
+            <div class="display-text">no data in record</div>
+            {% endif %}
+        </div>
+    </div>
+    <div></div>
+    <div class="payment-history">
+        {% if payment_check and payment_check.payment_status == '1' %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>创建日期</th>
+                    <th>金额金额</th>
+                    <th>支付时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>{{payment_check.create_time}}</th>
+                    <th>{{payment_check.total}}</th>
+                    <th>no set</th>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+    {% endif %}
+{% endblock content%}

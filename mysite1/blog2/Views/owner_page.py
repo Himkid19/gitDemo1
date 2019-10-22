@@ -73,3 +73,11 @@ def setting_count_page(request,house_no):
 def delete_rate_record(request,id,house_no):
     monthly_pay.objects.filter(id=id).delete()
     return redirect('/index/choice_payment/set_payment/house_no='+house_no)
+
+def Room_setting_page(request):
+    house_gather = HouseInfo.objects.all()
+    return render(request,'room_setting_page.html',locals())
+
+def Edit_Info_page(request,house_no):
+
+    return render(request,'owner page/edit_house_info.html',locals())

@@ -14,6 +14,7 @@
     <h1>set payment</h1>
     <p>{{house_no}}</p>
 
+
 <form class="form-horizontal" method="post">
 
     {% csrf_token %}
@@ -48,14 +49,17 @@
       <th>操作</th>
     </tr>
   </thead>
-    {% for i in count_setting_record %}
   <tbody>
-    <th>{{i.total}}</th>
-    <th>{{i.get_payment_status_display}}</th>
-    <th>{{i.create_time}}</th>
-    <th><a href="{% url 'del_record' id=i.id house_no=house_no %}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></th>
-  </tbody>
+    {% for i in count_setting_record %}
+    <tr>
+        <th>{{i.total}}</th>
+        <th>{{i.get_payment_status_display}}</th>
+        <th>{{i.create_time}}</th>
+        <th><a href="{% url 'del_record' id=i.id house_no=house_no %}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></th>
+    </tr>
     {% endfor %}
+  </tbody>
+
 </table>
 <script>
 
