@@ -19,6 +19,7 @@
             <tr>
                 <th>序号</th>
                 <th>房号</th>
+                <th>当前用户</th>
                 <th>状态</th>
                 <th>操作</th>
             </tr>
@@ -33,6 +34,7 @@
 
                     <th>{{forloop.counter}}</th>
                     <th><a href="{% url 'edit_info' house_no=i.house_no %}">{{i.house_no}}</a></th>
+                    <th>{{i.user}}</th>
                     <th>{{i.get_status_display}}</th>
                     <th></th>
                     </tr>

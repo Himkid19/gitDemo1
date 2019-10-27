@@ -1,4 +1,52 @@
 {% extends 'index.html' %}
 {% block content %}
-    <div>{{house_no}}</div>
+    <style>
+        .title-display{
+            margin:20px;
+        }
+
+        .house-content{
+            margin:20px 50px 50px;
+        }
+
+        .house-label{
+            margin-top:20px;
+            margin-left:30px;
+        }
+
+        .select-label{
+            margin-left:30px;
+        }
+
+        .user-list{
+            margin:20px;
+        }
+    </style>
+    {% if msg %}
+    <div class="alert alert-danger" role="alert">
+        <a href="#" class="alert-link">{{msg}}</a>
+    </div>
+    {% endif %}
+    <div class="title-display">{{house_no}}</div>
+    <div class="house-content">
+        <div class="house-detail">
+            <p><span class="house-label">房屋大小：</span>{{house_obj.width}}</p>
+            <p><span class="house-label">房屋高度：</span>{{house_obj.height}}</p>
+            <p><span class="house-label">房屋描述：</span>{{house_obj.direction}}</p>
+        </div>
+
+        <form action="{% url 'change_user' house_no=house_no%}" method="post">
+            {% csrf_token %}
+            <span class="select-label">user:</span>
+            <select class="user-list" name="user-select">
+                {% if current_user%}
+                <option selected="selected">{{current_user}}</option>
+                {% endif %}
+                {% for i in r_users %}
+                <option>{{i.username}}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="up">
+        </form>
+    </div>
 {% endblock content %}

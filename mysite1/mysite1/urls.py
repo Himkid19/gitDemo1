@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^index/waiting_list/del/(\d+)/$', owner_page.del_rental_Info, name='del'),
     path('index/room_setting', owner_page.Room_setting_page),
     url(r'^index/room_setting/edit_info_page/house_no=(?P<house_no>\d+)',owner_page.Edit_Info_page,name='edit_info'),
+    url(r'^index/room_setting/change_user/house_no=(?P<house_no>\d+)',owner_page.change_house_owner,name='change_user'),
 
 ]
 

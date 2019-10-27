@@ -79,5 +79,19 @@ def Room_setting_page(request):
     return render(request,'room_setting_page.html',locals())
 
 def Edit_Info_page(request,house_no):
-
+    house_obj = HouseInfo.objects.get(house_no=house_no)
+    current_user = house_obj.user.username
+    group_rental = Group.objects.get(name='租客')
+    r_users = group_rental.user_set.all()
     return render(request,'owner page/edit_house_info.html',locals())
+
+def change_house_owner(request,house_no):
+    new_user = request.POST.get('user-select')
+    try:
+        user_obj = User.objects.get(username=new_user)
+        HouseInfo.objects.filter(house_no=house_no).update(user=user_obj)
+        return redirect('/index/room_setting')
+    except Exception as e:
+        msg = 'update failed'
+        print('failed',e)
+    return redirect('/index/room_setting/edit_info_page/house_no='+house_no)
