@@ -53,3 +53,7 @@ class monthly_pay(models.Model):
     def __unicode__(self):
         return self.house_no.__str__()
 
+class Check_out_application(models.Model):
+    pass
+class Housing_Supporting_Facilities_application(models.Model):
+    pass

@@ -22,7 +22,7 @@ def Waiting_Audit_Info(request):
     r_Groups = Group.objects.get(name='租客')
     r_users = r_Groups.user_set.all()
     r_display = str(r_Groups)
-    return render(request,'waiting_audit_info.html',locals())
+    return render(request,'owner page/waiting_audit_info.html',locals())
 
 # 审核租客信息
 def Audit_tenant_Info(request,id):
@@ -39,7 +39,7 @@ def del_rental_Info(request,id):
     return redirect('/index/waiting_list')
 def choice_count(request):
     house_list = HouseInfo.objects.all()
-    return render(request,'choice_payment_page.html',locals())
+    return render(request,'owner page/choice_payment_page.html',locals())
 
 
 def setting_count_page(request,house_no):
@@ -68,7 +68,7 @@ def setting_count_page(request,house_no):
         count_setting_record = monthly_pay.objects.filter(house_no=house_no)
     except Exception as e:
         print(e)
-    return render(request,'set_payment_page.html',locals())
+    return render(request,'owner page/set_payment_page.html',locals())
 
 def delete_rate_record(request,id,house_no):
     monthly_pay.objects.filter(id=id).delete()
@@ -76,7 +76,7 @@ def delete_rate_record(request,id,house_no):
 
 def Room_setting_page(request):
     house_gather = HouseInfo.objects.all()
-    return render(request,'room_setting_page.html',locals())
+    return render(request,'owner page/room_setting_page.html',locals())
 
 def Edit_Info_page(request,house_no):
     house_obj = HouseInfo.objects.get(house_no=house_no)
