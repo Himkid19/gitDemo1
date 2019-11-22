@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
+        <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
+        <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<style type="text/css">
+        td {
+            border: 1px #000 solid;
+            margin: 0;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100%;
+        }
+
+        .list{
+
+        }
+    </style>
+</head>
+
+<body style="padding: 30px">
+<span id="userid">我的随机账号：</span>
+<table>
+    <tr>
+        <td style="width: 500px;">
+            <div id="historymsg" style="height: 400px;overflow: auto"></div>
+        </td>
+        <td style="width: 400px">
+            <div id="userlist" style="height: 400px;overflow: auto">
+                {% for i in user_list%}
+                <div class="list">
+                        <input id="userid" type="button" onclick="choice_user()" value="{{i.login_user_name}}">
+                </div>    
+                    
+                {% endfor %}
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <textarea id="msg"></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <select class="form-control" id="isgroup">
+            </select>
+            <input class="btn btn-info btn-block" type="button" onclick="send()" value="发送">
+        </td>
+    </tr>
+</table>
+<script>
+    function choice_user(){
+        $.post('/chat_set/',{"user":$("#userid").val()},function () {
+            console.log($("#userid").val())
+        })
+    }
+    window.onload = function () { 
+
+     }
+</script>
+</body>
+</html>

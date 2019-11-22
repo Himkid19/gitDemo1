@@ -1,7 +1,7 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,HttpResponse
 from blog import form
 from blog.models import *
-
+from dwebsocket import accept_websocket
 
 def Register(request):
     if request.method == "GET":
@@ -84,3 +84,24 @@ def log_out(request):
 def test(requset):
     login = form.login_check()
     return render(requset,"TEST.html",locals())
+
+
+
+def chat_page(request):
+    user_list = User_Info.objects.all()
+    return render(request,'chat_page.html',locals())
+
+
+@accept_websocket
+def chat_set(request):
+
+
+    print(userid)
+    # if request.is_websocket:
+    #     while True:
+    #         msg = request.websocket.wait()
+    #         if not "test":
+    #             break
+    #         else:
+    #             print("conntect success")
+    return HttpResponse("success")

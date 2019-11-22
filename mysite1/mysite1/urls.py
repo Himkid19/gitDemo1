@@ -42,6 +42,9 @@ urlpatterns = [
     path('index/room_setting', owner_page.Room_setting_page),
     url(r'^index/room_setting/edit_info_page/house_no=(?P<house_no>\d+)',owner_page.Edit_Info_page,name='edit_info'),
     url(r'^index/room_setting/change_user/house_no=(?P<house_no>\d+)',owner_page.change_house_owner,name='change_user'),
+    path('index/chat_page/',views.chat_page),
+    path('chat/',views.chat),
+    path('send/',views.send),
 
 ]
 

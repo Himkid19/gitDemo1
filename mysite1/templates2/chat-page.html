@@ -1,0 +1,139 @@
+{% extends "index.html" %}
+{% block content %}
+
+<style type="text/css">
+    td {
+        border: 1px #000 solid;
+        margin: 0;
+    }
+
+    textarea {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+</head>
+<body>
+<div id="all-chat-place"  style="padding: 30px;margin-left: 400px;margin-top: 100px ">
+        <span id="userid">当前用户：</span>
+        <table>
+        <tr>
+            <td style="width: 500px;">
+                <div id="historymsg" style="height: 400px;overflow: auto"></div>
+                    
+            </td>
+            <td style="width: 400px">
+                <div id="userlist" style="height: 400px;overflow: auto">
+                    
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <textarea id="msg"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <select class="form-control" id="isgroup">
+                </select>
+                <input class="btn btn-info btn-block" type="button" onclick="send()" value="发送">
+            </td>
+        </tr>
+        </table>
+</div>
+
+<script>
+var ws,myid
+window.onload = function(){
+    if ("WebSocket" in window){
+        ws = new WebSocket("ws://"+window.location.host+"/chat/");
+        ws.onopen = function(){
+            ws.send('test');
+        };
+        ws.onmessage = function(evt){
+            console.log(evt.data);
+            var received_msg = evt.data;
+            var msg = eval("("+received_msg+")");//修改成js合适的格式
+            //type == '0'表示显示列表，1表示发送消息
+            if(msg.type == '0'){
+                if(msg.userid !=null){
+                    myid = msg.userid
+                    $("#userid").append(msg.username)
+                }
+                $("#userlist").empty
+                $("#isgroup").empty
+                $("#isgroup").append("<option value='1'>群发</option>")
+                
+                for(var i =0;i<msg.all_list.length;i++){
+                    for(var j =0;j<msg.cur_user_list.length;j++){
+                        if(msg.all_list[i] == msg.cur_user_list[j]){
+                            $('#userlist').append(msg.all_list[i]+"--Online"+"<hr />")                           
+                        }
+                        
+                        $('#userlist').append(msg.all_list[i]+"<hr />")//跳出内循环
+                        
+                    }    
+                        
+                }
+                for(var i =0 ;i<msg.cur_user_list.length;i++){
+                    $("#isgroup").append("<option value='"+msg.cur_user_list[i]+"'>"+msg.cur_user_list[i]+"</option>")
+                }
+            }
+                
+            //     for(var i = 0; i<msg.cur_list.length; i++){
+            //         $("#userlist").append(msg.cur_list[i] + "<hr />")//在线用户列表
+                    
+            //         $("#isgroup").append("<option value='"+msg.cur_list[i]+"'>"+msg.cur_list[i]+"</option>")//用户选择
+            //     }
+            // }
+            //发送信息时
+            else{
+                var myDATE = new Date();
+                nowtime = myDATE.toLocaleDateString()
+                newmsg = ""
+                
+                if(myid == msg.data.user){
+                    newmsg = "<span style='color:blue;float:right'>" + msg.data.user + ":" + nowtime + "<br />" + msg.data.msg  + "</span>" + "<br />"
+                }
+                else{
+                    newmsg = "<span style='float:left'>" + msg.data.user + ":" + nowtime + "<br />" + msg.data.msg  + "</span>" + "<br />"
+                }
+                console.log(newmsg)
+                $("#msg-content").append(newmsg)  
+                
+            }
+
+        };
+        ws.onclose = function () { 
+            alert("close conntect!")
+         }
+    }
+}
+    //send msg
+function send() { 
+    msgtxt = $("#msg").val()
+    msguser = $("#isgroup").val()
+    if($("#isgroup").val()=='1'){
+        msg = {
+            type:"1",
+            txt:msgtxt,
+            userfrom:myid,
+        }
+    }
+    else{
+        msg={
+            type:"1",
+            txt:msgtxt,
+            userto:msguser,
+            userfrom:myid,
+        }
+    }
+    $.post("/send/",msg,function () { 
+        $("#msg").val("")
+        $("#msg").focus()
+        })
+    }
+    </script>
+</body>
+{% endblock %}

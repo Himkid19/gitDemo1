@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style type="text/css">
+        td {
+            border: 1px #000 solid;
+            margin: 0;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body style="padding: 30px">
+<span id="userid">我的随机账号：</span>
+<table>
+    <tr>
+        <td style="width: 500px;">
+            <div id="historymsg" style="height: 400px;overflow: auto"></div>
+        </td>
+        <td style="width: 400px">
+            <div id="userlist" style="height: 400px;overflow: auto">
+                
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <textarea id="msg"></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <select class="form-control" id="isgroup">
+            </select>
+            <input class="btn btn-info btn-block" type="button" onclick="send()" value="发送">
+        </td>
+    </tr>
+</table>
+<script>
+var ws,myid
+    window.onload = function(){
+        if ("WebSocket" in window){
+            ws = new WebSocket("ws://"+window.location.host+"/chat/");
+            ws.onopen = function(){
+                ws.send('test');
+            };
+            ws.onmessage = function(evt){
+                console.log(evt.data);
+                var received_msg = evt.data;
+                var msg = eval("("+received_msg+")");//修改成js合适的格式
+                //type == '0'表示显示列表，1表示发送消息
+                if(msg.type == '0'){
+                    if(msg.userid !=null){
+                        myid = msg.userid
+                        $("#userid").append(myid)
+                    }
+                    $("#userlist").empty
+                    $("#isgroup").empty
+                    $("#isgroup").append("<option value='1'>群发</option>")
+                    for(var i = 0; i<msg.userlist.length; i++){
+                        $("#userlist").append(msg.userlist[i] + "<hr />")//在线用户列表
+                        $("#isgroup").append("<option value='"+msg.userlist[i]+"'>"+msg.userlist[i]+"</option>")//用户选择
+                    }
+                }
+                //发送信息时
+                else{
+                    var myDATE = new Date();
+                    nowtime = myDATE.toLocaleDateString()
+                    newmsg = ""
+                    
+                    if(myid == msg.data.user){
+                        newmsg = "<span style='color:blue;float:right'>" + msg.data.user + ":" + nowtime + "<br />" + msg.data.msg  + "</span>" + "<br />"
+                    }
+                    else{
+                        newmsg = "<span style='float:left'>" + msg.data.user + ":" + nowtime + "<br />" + msg.data.msg  + "</span>" + "<br />"
+                    }
+                    console.log(newmsg)
+                    $("#historymsg").append(newmsg)  
+                    
+                }
+
+            };
+            ws.onclose = function () { 
+                alert("close conntect!")
+             }
+        }
+    }
+        //send msg
+    function send() { 
+        msgtxt = $("#msg").val()
+        msguser = $("#isgroup").val()
+        if($("#isgroup").val()=='1'){
+            msg = {
+                type:"1",
+                txt:msgtxt,
+                userfrom:myid,
+            }
+        }
+        else{
+            msg={
+                type:"1",
+                txt:msgtxt,
+                userto:msguser,
+                userfrom:myid,
+            }
+        }
+        $.post("/msg_send/",msg,function () { 
+            $("#msg").val("")
+            $("#msg").focus()
+            })
+        }
+    
+
+    
+</script>
+</body>
+</html>

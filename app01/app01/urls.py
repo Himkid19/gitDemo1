@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from blog.views import login_2
+from blog.views import login_2,test_ws
 
 from django.conf.urls import url,include
 urlpatterns = [
@@ -25,6 +25,20 @@ urlpatterns = [
     path('index.html/',login_2.index),
     path('test.html/',login_2.test),
     path('log_out/',login_2.log_out),
-    url(r'^captcha', include('captcha.urls'))
+
+    url(r'^captcha', include('captcha.urls')),
+    path('to_sendmsg/',test_ws.to_sendmsg),
+    path('to_recmsg/',test_ws.to_recmsg),
+    path('link/',test_ws.link),
+    path('send/',test_ws.send),
+    path('ws_temp/',test_ws.ws_temp),
+    path('echo_once/',test_ws.echo_once),
+    path('to_chat/',test_ws.to_chat),
+    path('chat/',test_ws.chat),
+    path('msg_send/',test_ws.msg_send),
+
+    path('chat_page/',login_2.chat_page),
+    path('chat_set/',login_2.chat_set),
+
 
 ]

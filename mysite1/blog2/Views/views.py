@@ -1,10 +1,12 @@
-from django.shortcuts import render,redirect,render_to_response
+from django.shortcuts import render,redirect,render_to_response,HttpResponse
 from blog2.form import RegisterForm,LoginForm,Re_set,forget_PW
 from django.contrib.auth.models import User,Group
 from blog2.models import UserProfile
 from django.contrib import auth
 from django.contrib.auth.hashers import check_password
 from django.db import models
+from dwebsocket import accept_websocket
+import json
 # Create your views here.
 def register(request):
     if request.method == "POST":
@@ -115,3 +117,70 @@ def forget_password(request):
 
 
 
+def chat_page(request):
+
+    return render(request,'chat-page.html',locals())
+
+clients = {}
+all_user_list = []
+cur_user_list = {}
+import uuid
+@accept_websocket
+def chat(request):
+    username = request.user.username
+    all_user = User.objects.all()
+    # 所以用户
+    if request.is_websocket():
+        userid = str(uuid.uuid1())[::8]   #替换为userid
+        # clients[userid] = request.websocket
+        clients[userid] = request.websocket
+        cur_user_list[username] = username
+#         每一个websocket链接视为一个用户
+        for i in all_user:
+            ever_user_name = i.username
+            all_user_list.append(ever_user_name)
+
+        while True:
+            for i in clients:
+                print(i)
+            msg = request.websocket.wait()
+            if not msg:
+                break
+            else:
+                msg = str(msg,encoding="utf-8")
+                if msg == "test":
+                    print("websocket conntect success"+userid)
+                    # 当前在线用户
+                    clients[userid].send(json.dumps({"type":"0","userid":userid,"cur_username":username,"cur_list":list(clients.keys()),"all_list":all_user_list,"cur_user_list":list(cur_user_list.keys())}))
+                    all_user_list.clear()
+                    # for client in clients:
+                    #     # 所有用户列表
+                    #     clients[client].send(json.dumps({"user":None,"type":"0","userlist":list(clients.keys())}))
+
+#         删除离开聊天框的用户
+        if userid in clients:
+            del clients[userid]
+            print(username+"离线")
+            if username in cur_user_list:
+                del cur_user_list[username]
+                for client in clients:
+                    clients[client].send(json.dumps({"user":None,"type":"0","cur_list":list(clients.keys()),"all_list":all_user_list,"cur_user_list":list(cur_user_list.keys())}).encode("'utf-8'"))
+
+
+def send(request):
+    msg = request.POST.get('txt')
+    userto = request.POST.get('userto')
+    userfrom = request.POST.get('userfrom')
+    type = request.POST.get('type')
+    #  返回json中 user为空即群发；user为userid即私发;type为1表示发送信息
+    if type == '1':
+    #群发
+        for client in clients:
+            clients[client].send(json.dumps({"type":"1","data":{"msg":msg,"user":userfrom}}).encode("'utf-8'"))
+    else:
+    #私发(匹配useridto在clients中),对方显示
+        clients[userto].send(json.dumps({"type":"1","data":{"msg":msg,"user":userfrom}}).encode("'utf-8'"))
+        #私发，自己显示
+        clients[userfrom].send(json.dumps({"type":"1","data":{"msg":msg,"user":userfrom}}).encode("'utf-8'"))
+
+    return HttpResponse(json.dumps({"msg":"success"}))
