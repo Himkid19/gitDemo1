@@ -1,0 +1,18 @@
+{% extends 'index.html' %}
+{% block content %}
+    <div>
+        <select name="" id="apply-type">            
+            <option value="0">退房申请</option>
+            <option value="1">配套设施申请</option>
+            <option value="2">其他申请</option>            
+        </select>
+        <button onclick="pass_key()">up</button>
+
+    </div>
+<script>
+    function pass_key(){
+        select = $('#apply-type').val()
+        console.log(select)
+    }
+</script>
+{% endblock %}

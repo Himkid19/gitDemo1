@@ -1,12 +1,26 @@
 {% extends 'index.html' %}
 {% block content %}
     <style>
+
+
         .title-display{
-            margin:20px;
+            margin-left:50px;
+            font-size: larger;
         }
 
         .house-content{
             margin:20px 50px 50px;
+            overflow: auto;
+        }
+
+        .Stationary-configuration-title{
+            margin-left: 30px;
+            border-bottom: 1px solid;
+        }
+
+        .house-detail{
+            margin-top: 20px;
+            padding: 10px;
         }
 
         .house-label{
@@ -21,18 +35,77 @@
         .user-list{
             margin:20px;
         }
+
+        .hydropower-title{
+            margin-left: 30px;
+            border-bottom: 1px solid;
+        }
+
+        .hydropower-list{
+            margin-left: 30px;
+            margin-top: 20px;
+            padding: 10px;
+        }
+
+        .hydropower-list p{
+            padding-top: 10px;
+            padding-bottom: 20px;
+        }
+
+        .hydropower-list button{
+            margin-left: 50%;
+        }
+
+        .Mobile-matching-content{
+            margin-top: 30px;
+            height: 100%;
+            padding: 10px;
+        }
+
+        .mobile-matching-title{
+            margin-left: 30px;
+            border-bottom: 1px solid;
+        }
+
+        .mm-list{
+            margin-left: 30px;
+            margin-top: 20px;
+            padding: 10px;
+        }
+        .mm-list p{
+            
+            padding-top: 10px;
+            padding-bottom: 20px;
+            
+            
+        }
+        .mm-list input{
+            width: 100px;
+        }
+
+        .else_thing{
+            width: 300px;
+            height: 150px;
+        }
+
+        .mm-list button{
+            margin-left: 50%;
+        }
+
     </style>
     {% if msg %}
     <div class="alert alert-danger" role="alert">
         <a href="#" class="alert-link">{{msg}}</a>
     </div>
     {% endif %}
-    <div class="title-display">{{house_no}}</div>
+    <div class="title-display">房号为<strong> {{house_no}} </strong>的房屋信息如下：</div>
     <div class="house-content">
+        <div class="Stationary-configuration-title"><h1>固定配套设施</h1></div>
         <div class="house-detail">
             <p><span class="house-label">房屋大小：</span>{{house_obj.width}}</p>
             <p><span class="house-label">房屋高度：</span>{{house_obj.height}}</p>
             <p><span class="house-label">房屋描述：</span>{{house_obj.direction}}</p>
+            <p><span class="house-label">当前状态：</span>{{house_obj.get_status_display}}</p>
         </div>
 
         <form action="{% url 'change_user' house_no=house_no%}" method="post">
@@ -41,12 +114,96 @@
             <select class="user-list" name="user-select">
                 {% if current_user%}
                 <option selected="selected">{{current_user}}</option>
+                {% else %}
+                <option value="null" selected>无用户</option>
                 {% endif %}
                 {% for i in r_users %}
                 <option>{{i.username}}</option>
                 {% endfor %}
+                <option value="null">无用户</option>
             </select>
             <input type="submit" value="up">
         </form>
+
+        <div class="update-hydropower">
+            <div class="hydropower-title"><h1>水电配置</h1></div>
+            <div class="hydropower-list">
+                <p>水量统计:本月水量为  <input type="number" id="water" value="{{hydropower_obj.water}}">  吨</p>
+                <p>电量统计:本月电量为  <input type="number" id="power" value="{{hydropower_obj.power}}">  度</p>
+                <p>最近更新时间为： {{hydropower_obj.last_time}}</p>
+                <p><button id="example" type="button" class="btn btn-primary" onclick="update_hydropower()">修改</button></p>
+            </div>
+        </div>
+
+        <div class="Mobile-matching-content">
+            <div class="mobile-matching-title"><h1>可配置配套设施</h1></div>
+            <div class="mm-list">
+                <p>椅子: <input id="chair" type="number" value="{{house_obj.chair}}" placeholder="输入椅子数量"> 张</p>
+                <p>桌子: <input id="table" type="number" value="{{house_obj.table}}" placeholder="输入桌子子数量"> 张</p>
+                <p>空调: <input id="aircon" type="number" value="{{house_obj.aircon}}" placeholder="输入空调数量"> 台</p>
+                <p>风扇: <input id="blower" type="number" value="{{house_obj.blower}}" placeholder="输入风扇数量"> 扇</p>
+                <p>其他补充: <input class="else_thing" type="text" value="{{house_obj.else_support}}" placeholder="输入其他配套设施"></p>
+                <p><button type="button" class="btn btn-primary" onclick="update_MM()">修改</button></p>
+            </div>
+        </div>
     </div>
+    <script>
+        
+        function update_hydropower(){
+            water = $('#water').val()
+            power = $('#power').val()
+            house_no = '{{house_no|safe}}'
+            if(water == ''|| power == ''){
+                alert('水电量不能为空')
+            }
+            else{
+                
+                msg = {
+                    water:water,
+                    power:power,
+                    house_no:house_no,
+                }
+                $.post('update_hyd/',msg,function(msg){
+                    console.log(msg)
+                    if(msg.type == '1'){
+                        alert('修改成功')
+                    }
+                    else{
+                        alert(msg.err_msg)
+                    }
+                })
+            }
+        }
+
+        function update_MM() { 
+            chair = $('#chair').val()
+            table = $('#table').val()
+            aircon = $('#aircon').val()
+            blower = $('#blower').val()
+            else_thing = $('.else_thing').val()
+            house_no = '{{house_no|safe}}'
+            
+            
+            list = {
+                chair:chair,
+                table:table,
+                aircon:aircon,
+                blower:blower,
+                else_thing:else_thing,
+                house_no : house_no,
+            }
+
+                $.post('update_MM/',list,function (recho) { 
+                    console.log(recho)
+                    if(recho.type == '1'){
+                        alert('修改成功')
+                    }
+                    else{
+                        alert(recho.err_msg)
+                    }
+                })
+            }
+            
+         
+    </script>
 {% endblock content %}

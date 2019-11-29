@@ -46,15 +46,21 @@ class Re_set(forms.Form):
     newpassword1 = forms.CharField(max_length=30,label="New password",widget=forms.PasswordInput)
     newpassword2 = forms.CharField(max_length=30,label="Second password",widget=forms.PasswordInput)
 
-    def clean(self):
+    # def clean(self):
+    #     oldpassword = self.cleaned_data.get('oldpassword')
+    #     newpassword1 = self.cleaned_data.get('newpassword1')
+    #     newpassword2 = self.cleaned_data.get('newpassword2')
+    #     if oldpassword == newpassword1:
+    #         self.add_error('newpassword1','can not be same')
+    #     if newpassword1 != oldpassword:
+    #         self.add_error('newpassword2','password is not match')
+    #     return self.cleaned_data
+    def clean_newpassword1(self):
         oldpassword = self.cleaned_data.get('oldpassword')
         newpassword1 = self.cleaned_data.get('newpassword1')
-        newpassword2 = self.cleaned_data.get('newpassword2')
         if oldpassword == newpassword1:
-            self.add_error('newpassword1','can not be same')
-        if newpassword1 != oldpassword:
-            self.add_error('newpassword2','password is not match')
-        return self.cleaned_data
+            raise forms.ValidationError('new password can not be same ')
+        return newpassword1
 
 
 

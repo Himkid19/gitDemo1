@@ -1,0 +1,97 @@
+{% extends 'index.html' %}
+{% block content %}
+<style>
+    .payment-detail-display{
+        
+        width: 1903px;
+        /* height: auto; */
+        justify-content: center;
+        font-family:'Microsoft YaHei','Hiragino Sans GB',Helvetica,Arial,'Lucida Grande',sans-serif;;
+        -webkit-box-pack: center;
+        background-color: #E8E8E8;
+    }
+
+    .container clearfix{
+        width: 1318px;
+        box-sizing: border-box;
+        font-size: 14px;
+        line-height: 22px;
+        
+        
+    }
+
+    .content-title{
+        height: 800px;
+        padding: 10px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        background-color: white;
+    }
+    .title-article{
+        box-sizing: border-box;
+        height: 37px;
+        margin-top: 20px;
+        margin-left: 40px;
+        width: 500px;
+        font-size: large;
+        border-bottom: 1px solid;
+    }
+
+    .amount-type-display{
+        margin-top: 60px;
+        height: 300px;
+        margin-left: 100px;
+        margin-right: 100px;
+        /* border: 1px solid; */
+    }
+
+    .amount-type-display li {
+        margin-left: 40px;
+        margin-top: 20px;
+        
+        /* display: inline-block;
+        padding: .5em 1em ; */
+    }
+
+    .select-payment-display{
+        
+        margin-left: 70px;
+    }
+
+    .up-button{
+        margin-top: 70px;
+        margin-left: 460px;
+    }
+    
+</style>
+<body>
+    <div class="payment-detail-display">
+        <div class="container clearfix">
+            <div class="content-title">
+                <div class="title-article"><span class="glyphicon glyphicon-usd" aria-hidden="true"></span>  订单ID：{{pay_id}}</div>
+                <div class="amount-type-display">
+                    <ol>
+                        <p><strong>总金额:  {{pay_obj.total}} 元</strong></p>
+                        <p>房费:  {{pay_obj.house_rent}} 元</p>
+                        <p>水费:  {{pay_obj.water_rate}} 元</p>
+                        <p>电费:  {{pay_obj.power_rate}} 元</p>
+                        <p>其他:  {{pay_obj.else_rate}} 元</p>
+                        <p>备注:  {{pay_obj.remark}}</p>
+                    </ol>
+                </div>
+                <div class="select-payment-display">
+                    <p>支付方式： <select class="pay_way">
+                        <option>微信支付</option>
+                        <option selected>支付宝支付</option>
+                    </select></p>
+                    <p>如有对租金有不解，<a href="/index/chat_page">线上联系房东</a></p>
+                
+                </div>
+                <div class="up-button">
+                    <a href="{% url 'sumbit_order' order_id=pay_id  total=pay_obj.total %}"><button type="button" class="btn btn-primary btn-lg">提交</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock content %}

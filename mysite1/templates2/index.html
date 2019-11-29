@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style type="text/css">
+    .while-leader{
+        
+        width: auto;
+        
+    }
     .startpages{
         width:auto;
         height:80px;
@@ -82,51 +87,58 @@
 
 </head>
 <body>
-    <div class="startpages">
-        <div class="home">
-            <p><a href="#">Home</a></p>
-        </div>
-        <div class="msg">
-            <ul class="holderdisplay" >
-                <li>welcome, <a href="/index/reset_pw">{{request.user.username}}!-{{group_name}}</a></li>
-                {% csrf_token %}
-            {% if request.user.is_authenticated %}
-                <li><a href="/log_out/">登出</a></li>
-            {% else %}
-                <li><a href="/register/">注册</a></li>
-                <li><a href="/login/">登录</a></li>
-            {% endif %}
-            </ul>
-        </div>
-
-    </div>
     
-    <div class="menu">
-        {% if group_name == '租客' %}
-           <ul class="nav nav-tabs" >
-                <li  role="presentation" ><a href="/index/my_payment">cost</a></li>
-                <li  role="presentation" ><a href="/index/house_list">list</a></li>
-                <li role="presentation" ><a href="#">help</a></li>
-            </ul>
-        {% elif group_name == '房东' %}
-
-            <ul class="nav nav-tabs" >
-                <li  role="presentation" ><a href="/index/waiting_list">owner test</a></li>
-                <li  role="presentation" ><a href="/index/choice_payment">Set monthly payment</a></li>
-                <li role="presentation" ><a href="/index/room_setting">Room Setting</a></li>
-                <li role="presentation" ><a href="#">help</a></li>
-            </ul>
-        {% else %}
-            <p>waiting for allowing....</p>
-        {% endif %}
+    <div class="while-leader">
+        <div class="startpages" id="leader-page">
+                <div class="home">
+                    <p><a href="#">Home</a></p>
+                </div>
+                <div class="msg">
+                    <ul class="holderdisplay" >
+                        <li>welcome, <a href="/index/normal_edit">{{request.user.username}}!-{{group_name}}</a></li>
+                        {% csrf_token %}
+                    {% if request.user.is_authenticated %}
+                        <li><a href="/log_out/">登出</a></li>
+                    {% else %}
+                        <li><a href="/register/">注册</a></li>
+                        <li><a href="/login/">登录</a></li>
+                    {% endif %}
+                    </ul>
+                </div>
+    
+            </div>
+            
+            <div class="menu">
+                {% if group_name == '租客' %}
+                <ul class="nav nav-tabs" >
+                        <li  role="presentation" ><a href="/index/my_payment">cost</a></li>
+                        <li  role="presentation" ><a href="/index/house_list">list</a></li>
+                        <li  role="presentation" ><a href="/index/chat_page">在线反馈</a></li>
+                        <li  role="presentation" ><a href="/index/my_apply">申请</a></li>
+                        <li role="presentation" ><a href="#">help</a></li>
+                    </ul>
+                {% elif group_name == '房东' %}
+    
+                    <ul class="nav nav-tabs" >
+                        <li  role="presentation" ><a href="/index/waiting_list">owner test</a></li>
+                        <li  role="presentation" ><a href="/index/choice_payment">Set monthly payment</a></li>
+                        <li role="presentation" ><a href="/index/room_setting">Room Setting</a></li>
+                        <li  role="presentation" ><a href="/index/chat_page">在线反馈</a></li>
+                        <li role="presentation" ><a href="#">help</a></li>
+                    </ul>
+                {% else %}
+                    <p>waiting for allowing....</p>
+                {% endif %}
+            </div>
+            <div class="crumb">
+                <ol class="breadcrumb">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Library</a></li>
+                    <li class="active">Data</li>
+                </ol>
+            </div>
     </div>
-    <div class="crumb">
-        <ol class="breadcrumb">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Library</a></li>
-            <li class="active">Data</li>
-        </ol>
-    </div>
+        
     <div class="content">
 
         {% block content %}

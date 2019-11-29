@@ -1,0 +1,59 @@
+{% extends 'index.html' %}
+{% block content %}
+    <style>
+        .user_info_page{
+            padding-left:50px ;
+            padding-top: 30px;
+        }
+        .back_button{
+            float: left;
+
+        }
+
+        .user-content-display{
+            margin-left: 200px;
+            height: 100%;
+            width: 1000px;
+            padding: 20px;
+            border-top:1px solid;
+            border-left:1px solid ;
+        }
+
+        .user-title{
+            width: 600px;
+            border-bottom: solid 1px;
+            font-size: x-large;
+        }
+
+        .user-detail-content{
+            margin-top: 30px;
+        }
+
+        .user-detail-content p{
+            padding-top: 10px;
+            padding-bottom: 20px;
+        }
+
+    </style>
+    {% if message %}
+    <div class="alert alert-danger" role="alert">
+            <a href="#" class="alert-link">{{message}}</a>
+        </div>
+    {% endif %}
+    <div class="user_info_page">
+        <div class="back_button"><a href="/index/waiting_list"><button><span class="glyphicon glyphicon-arrow-left"></span>  back</button></a></div>
+        <div class="user-content-display"> 
+            <div class="user-title"><strong>用户详情</strong></div>
+            <div class="user-detail-content">
+                {% if user_obj %}
+                    <p>用户名:  {{user_obj.user}}</p>
+                {% elif user_obj2 %}
+                    <p>用户名:  {{user_obj2.username}}</p>
+                {% endif %}
+                <p>手机:  {{user_obj.telephone}}</p>
+                <p>身份证： <img src="" alt="" class="img-rounded"></p>
+            </div>
+        </div>
+    
+    </div>
+{% endblock %}

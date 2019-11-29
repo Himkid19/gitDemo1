@@ -34,7 +34,9 @@
     {% endfor %}
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-      <button type="submit" class="btn btn-default">Sign in</button>
+      {% if status != '0' %}
+        <button type="submit" class="btn btn-default">add</button>
+      {% endif %}      
     </div>
   </div>
 
@@ -55,14 +57,16 @@
         <th>{{i.total}}</th>
         <th>{{i.get_payment_status_display}}</th>
         <th>{{i.create_time}}</th>
-        <th><a href="{% url 'del_record' id=i.id house_no=house_no %}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></th>
-    </tr>
+        <!-- 未支付的设置金额记录才能被删除 -->
+        {% if i.payment_status == '0' %}
+          <th><a href="{% url 'del_record' id=i.id house_no=house_no %}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></th>
+        {% endif %}
+        </tr>
     {% endfor %}
   </tbody>
 
 </table>
 <script>
-
 </script>
 
 {% endblock content%}

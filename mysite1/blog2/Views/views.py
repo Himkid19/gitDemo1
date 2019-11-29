@@ -6,6 +6,7 @@ from django.contrib import auth
 from django.contrib.auth.hashers import check_password
 from django.db import models
 from dwebsocket import accept_websocket
+from django.http import JsonResponse
 import json
 # Create your views here.
 def register(request):
@@ -66,32 +67,6 @@ def log_out(request):
         auth.logout(request)
     return redirect("/index/")
 
-def reset_pw(request):
-
-    if request.user.is_authenticated and request.method == "POST":
-        set_pw = Re_set(request.POST)
-        username = request.user.username
-        password = request.user.password
-        print(set_pw.errors)
-        if set_pw.is_valid():
-            old_password = set_pw.cleaned_data.get('old_password')
-
-            if check_password(old_password,password)==True:
-                user = auth.authenticate(username=username,password=old_password)
-                newpassword = set_pw.cleaned_data.get('new_password2')
-                user.set_password(newpassword)
-                user.save()
-                auth.logout(request)
-                return redirect("/login/")
-            else:
-                message = "password is wrong"
-
-    else:
-        if request.user.is_authenticated == False and request.method == 'GET':
-            return redirect("/login/")
-    set_pw = Re_set()
-    return render(request,"re_set_pw.html",locals())
-
 
 def forget_password(request):
     if request.method == "GET":
@@ -118,7 +93,7 @@ def forget_password(request):
 
 
 def chat_page(request):
-
+    username = request.user.username
     return render(request,'chat-page.html',locals())
 
 clients = {}
@@ -184,3 +159,40 @@ def send(request):
         clients[userfrom].send(json.dumps({"type":"1","data":{"msg":msg,"user":userfrom}}).encode("'utf-8'"))
 
     return HttpResponse(json.dumps({"msg":"success"}))
+
+def normal_edit(request):
+    try:
+        user_obj = UserProfile.objects.get(user__username=request.user.username)
+    except:
+        print('this user not have info ')
+
+
+    return render(request,'normal_edit_page.html',locals())
+
+def re_set_pw(request):
+    username = request.POST.get('username')
+    oldpw = request.POST.get('oldpw')
+    newpw = request.POST.get('newpw')
+    filter_result = User.objects.get(username=username).password
+    if check_password(oldpw,filter_result) == True:
+        user = auth.authenticate(username=username, password=oldpw)
+        user.set_password(newpw)
+        user.save()
+        return JsonResponse({'error_msg':'','type':'1'})
+    else:
+        return JsonResponse({'error_msg':'password is not match','type':'0'})
+
+def edit_personal(request):
+    phone_no = request.POST.get('phone_no')
+    username = request.POST.get('username')
+    print(username)
+    try:
+        filter_phone = UserProfile.objects.get(user__username=username).telephone
+        if filter_phone == phone_no:
+            return JsonResponse({'type':'0','error_msg':'手机号相同，请重新输入'})
+        else:
+            UserProfile.objects.filter(user__username=username).update(telephone=phone_no)
+            return JsonResponse({'type':'1','error_msg':''})
+    except Exception as e:
+        print(e)
+        return JsonResponse({'type':'0','error_msg':'找不到用户，系统异常'})

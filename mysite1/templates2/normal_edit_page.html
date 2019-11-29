@@ -1,0 +1,251 @@
+{% extends "index.html" %}
+{% block content %}
+<style>
+    body,html{
+  scroll-behavior: smooth;
+}
+
+    .edit-personal-info-page{
+        
+    }
+    .left{
+        height: 100%;
+        position: fixed;
+        top: 170px;
+        
+        width: 400px;
+        float: left;
+        background-color:white;
+    }
+
+    .title{
+        height: 37px;
+        margin-left: 20px;  
+    }
+
+    .title-content{
+        font-size: x-large;
+    }
+
+    .function-list{
+        max-height: 100%;
+        overflow: auto;
+        
+
+    }
+    .function-list a{
+        display: flex;
+        padding-bottom: 10px;
+        padding-inline-start: 23px;
+        padding-top: 30px;
+    }
+
+    .main{
+        border-left: 0.5px solid;
+        float: left;
+        width: 1000px;
+        top: 0;
+        height: 100%;
+        margin-left: 440px;
+        background-color:white;
+    }
+
+    .people-page{
+        height: 700px;
+        padding: 20px;
+        padding-inline-start: 20px;
+    }
+    .people-title{
+        margin-left: 20px;
+        margin-top: 10px;
+        margin-right: 50px;
+        font-size: larger;
+        border-bottom: 1px solid;
+    }
+    .personal-info-display{
+        height: 400px;
+        padding-left: 20px;
+        padding-top: 30px;
+    }
+
+    .personal-info-display p{
+        padding-top: 10px;
+        padding-bottom: 20px;
+    }
+    .info-button-set{
+        margin-top: 20px;
+        height: 150px;
+        padding: 20px 40px 50px;
+        
+    }
+    .save-button{
+        float: left;
+        margin-left: 400px;
+    }
+    .back-button{
+        float: left;
+        margin-left: 20px;
+    }
+    
+
+
+    .forget-pw-page{
+        margin-top: 50px;
+        height: 700px;
+        padding: 30px;
+    }
+    .forget-pw-title{
+        margin-left: 20px;
+        margin-top: 10px;
+        margin-right: 50px;
+        font-size: larger;
+        border-bottom: 1px solid;
+    }
+
+    .reset-password-form{
+        padding-top: 40px;
+        padding-bottom: 20px;
+    }
+
+    .reset-password-form p{
+        padding-top: 10px;
+        padding-bottom: 20px;
+    }
+
+    .get-code-button{
+        margin-left: 30px;
+    }
+
+    
+    .help-page{
+        margin-top: 50px;
+        height: 700px;
+        padding: 30px;
+    }
+
+    .help-page-title{
+        margin-left: 20px;
+        margin-top: 10px;
+        margin-right: 50px;
+        font-size: x-large;
+        border-bottom: 1px solid;
+        
+    }
+
+
+    
+</style>
+    <!-- {% if message %}
+    <div class="alert alert-danger" role="alert">
+        <a href="#" class="alert-link">{{message}}</a>
+    </div>
+    {% endif %}     -->
+    <div  class="edit-personal-info-page">
+        
+        <div class="left">
+            <div class="title"><span class="title-content"><strong>导航</strong></span></div>
+            <div class="function-list">
+                <a href="#leader-page" id="people">
+                    <span class="glyphicon glyphicon-user" aria-hidden="true">  用户信息</span>
+                </a>
+                <a href="#forget-pw-page" id="forget-pw">
+                    <span class="glyphicon glyphicon-question-sign" aria-hidden="true">  修改密码</span>
+                </a>
+                <a href="#help-page" id="help">
+                    <span class="glyphicon glyphicon-info-sign" aria-hidden="true">  帮助</span>
+                </a>
+            </div>
+        </div>
+        <div class="main">
+            <div class="people-page" id="people-page">
+                <div class="people-title"><strong>用户信息</strong></div>
+                <div class="personal-info-display">
+                    <p>用户名：   {{request.user.username}}</p>
+                    <p>电话：  <input id="phone_no" type="text" placeholder="请输入电话" value="{{user_obj.telephone}}"></p>
+                </div>
+                <div class="info-button-set">
+                    <div class="save-button"><input type="button" value="保存" onclick="edit_personal_inf()"></div>
+                    <div class="back-button"><a href="/index"><input type="button" value="返回"></a></div>
+                </div>
+            </div>
+            <div class="forget-pw-page" id="forget-pw-page">
+                <div class="forget-pw-title"><strong>修改密码</strong></div>                
+                    <div class="reset-password-form">
+                        <p>电话: <input type="text" placeholder="请输入电话"></p>
+                        <p>验证码: <input type="text" placeholder="请输入验证码"><span><input class="get-code-button" type="button" value="获取验证码"></span></p>
+                        <p>旧密码： <input id="oldpw" type="password" placeholder="请输入旧密码"></p>
+                        <p>新密码: <input id="newpw1" type="password" placeholder="输入第一次新密码"></p>
+                        <p>第二次密码： <input id="newpw2" type="password" placeholder="输入第二次密码"></p>
+                    </div>
+                    <div class="reset-button-set">
+                        <input style="float:left;margin-left: 350px;" type="button" value="修改" onclick="re_set_pw()">
+                    </div>
+            </div>
+            <div class="help-page" id="help-page">
+                <div class="help-page-title"><strong>Help</strong></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+<script>
+    function edit_personal_inf(){
+        phone_no = $("#phone_no").val()
+        if(phone_no == ''){
+            alert("手机号不能为空")
+        }
+        else{
+            msg = {
+                username:'{{request.user.username|safe}}',
+                phone_no:phone_no,
+            }
+            $.post('/edit_personal/',msg,function(msg){  
+                if(msg.type == '1'){
+                    alert('修改成功')
+                    location.reload(true)
+                }
+                else{
+                    alert(msg.error_msg)
+                }
+              })
+        }
+    }
+
+
+    function re_set_pw(){
+        username = '{{request.user.username|safe}}'
+        oldpw = $("#oldpw").val()
+        newpw1 = $("#newpw1").val()
+        newpw2 = $("#newpw2").val()
+        
+        if(oldpw=='' & newpw1 =='' & newpw2==''){
+            alert('请填写必填项')
+            
+        }
+        else if(oldpw == newpw1){
+            alert('新密码不能和旧密码一样')
+            }
+        else if(newpw1!=newpw2){
+            alert('两次密码不一致')
+        }
+        
+        else{
+            msg = {
+                username:username,
+                oldpw:oldpw,
+                newpw:newpw2,
+            }
+            $.post('/re_setpw/',msg,function(msg){
+                if(msg.type == '0'){
+                    alert(msg.error_msg)
+                }
+                else{
+                    alert('change password success!')
+                }
+                
+            })
+        }
+            
+    }
+</script>
+    
+{% endblock %}

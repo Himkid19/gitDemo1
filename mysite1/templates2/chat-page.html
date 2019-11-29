@@ -15,7 +15,7 @@
 </head>
 <body>
 <div id="all-chat-place"  style="padding: 30px;margin-left: 400px;margin-top: 100px ">
-        <span id="userid">当前用户：</span>
+        <span id="userid">当前用户：{{username}}</span>
         <table>
         <tr>
             <td style="width: 500px;">
@@ -68,13 +68,12 @@ window.onload = function(){
                 for(var i =0;i<msg.all_list.length;i++){
                     for(var j =0;j<msg.cur_user_list.length;j++){
                         if(msg.all_list[i] == msg.cur_user_list[j]){
-                            $('#userlist').append(msg.all_list[i]+"--Online"+"<hr />")                           
+                            $('#userlist').append(msg.all_list[i]+"--Online"+"<hr />")
+                            i = i+1;                          
                         }
-                        
-                        $('#userlist').append(msg.all_list[i]+"<hr />")//跳出内循环
-                        
+      
                     }    
-                        
+                    $('#userlist').append(msg.all_list[i]+"<hr />")//跳出内循环  
                 }
                 for(var i =0 ;i<msg.cur_user_list.length;i++){
                     $("#isgroup").append("<option value='"+msg.cur_user_list[i]+"'>"+msg.cur_user_list[i]+"</option>")

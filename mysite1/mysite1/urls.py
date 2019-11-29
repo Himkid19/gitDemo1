@@ -17,7 +17,8 @@ from django.contrib import admin
 from django.urls import path
 from blog2.Views import views,Rental_page,owner_page
 from django.conf.urls import url,include
-
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('index/waiting_list',owner_page.Waiting_Audit_Info),
@@ -26,7 +27,6 @@ urlpatterns = [
     path('register/', views.register),
     path('login/', views.login),
     path('log_out/', views.log_out),
-    path('index/reset_pw/', views.reset_pw),
     path('forget_pw/', views.forget_password),
     path('index/',views.index),
     url(r'^captcha', include('captcha.urls')),
@@ -45,7 +45,16 @@ urlpatterns = [
     path('index/chat_page/',views.chat_page),
     path('chat/',views.chat),
     path('send/',views.send),
+    url(r'^index/may_payment/pay_detail=(?P<pay_id>\d+)',Rental_page.payment_detail,name='payment_detail'),
+    url(r'^index/may_payment/payment_info_to_set/order_id=(?P<order_id>\d+)&total=(?P<total>\d+)',Rental_page.alipay_page,name='sumbit_order'),
+    path('index/normal_edit/',views.normal_edit),
+    path('re_setpw/',views.re_set_pw),
+    path('edit_personal/',views.edit_personal),
+    path('index/room_setting/edit_info_page/update_hyd/',owner_page.update_hyd),
+    path('index/room_setting/edit_info_page/update_MM/',owner_page.update_MM),
+    url(r'^index/waiting_list/user_info/username=(?P<id>\d+)',owner_page.check_people_info,name='check_user'),
+    path('index/my_apply',Rental_page.my_apply),
 
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

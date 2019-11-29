@@ -3,6 +3,7 @@ from blog import form
 from blog.models import *
 from dwebsocket import accept_websocket
 
+
 def Register(request):
     if request.method == "GET":
         register = form.Register()
@@ -92,16 +93,3 @@ def chat_page(request):
     return render(request,'chat_page.html',locals())
 
 
-@accept_websocket
-def chat_set(request):
-
-
-    print(userid)
-    # if request.is_websocket:
-    #     while True:
-    #         msg = request.websocket.wait()
-    #         if not "test":
-    #             break
-    #         else:
-    #             print("conntect success")
-    return HttpResponse("success")

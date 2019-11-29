@@ -2,6 +2,7 @@
 {% block content%}
 
 <div class="waiting_list">
+        
     <table class="table table-hover">
             <thead>
                 <tr>
@@ -16,7 +17,7 @@
 
                 <tbody>
                     <tr>
-                        <th>{{i.username}}</th>
+                        <th><a href="{% url 'check_user' i.id %}">{{i.username}}</a></th>
                         <th>{{i.phone_no}}</th>
                         <th>{{Groups_display}}</th>
                         <th><a href="{% url 'audit_pass' i.id %}">审核</a></th>
@@ -43,7 +44,7 @@
                 {% for i in r_users %}
                 <tbody>
                     <tr>
-                       <th><a href="#">{{i.username}}</a></th>
+                        <th><a href="{% url 'check_user' i.id %}">{{i.username}}</a></th>
                        <th>{{r_display}}</th>
                         <th><a href="{% url 'del' i.id %}">del</a></th>
 
@@ -53,5 +54,17 @@
             </thead>
         </table>
 </div>
+
+
+
+
+
+
+<script>
+    
+
+</script>
+
+
 
 {% endblock content%}

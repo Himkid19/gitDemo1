@@ -19,20 +19,40 @@ class UserProfile(models.Model):
 
 class HouseInfo(models.Model):
     house_no = models.CharField(verbose_name="房号",max_length=5,default=None,unique=True)
-    house_image = models.ImageField(verbose_name="房屋图片")
+    house_image = models.ImageField(verbose_name="房屋图片",upload_to="img/")
     width = models.CharField(verbose_name="大小",max_length=10)
     height = models.CharField(verbose_name="高",max_length=10)
     direction = models.CharField(verbose_name="描述",max_length=256)
-    user = models.ForeignKey(User,verbose_name="所属用户",on_delete=models.CASCADE,null=True,blank=True,)
+
+    user = models.ForeignKey(User,verbose_name="所属用户",on_delete=models.CASCADE,null=True,blank=True)
     house_status = (
         ('0',"闲置"),('1',"已售"),('2',"其他")
     )
     status = models.CharField(max_length=1,verbose_name="房屋状态",choices=house_status)
+
+    chair = models.CharField(max_length=4,verbose_name='椅子数目',null=True,blank=True)
+    table = models.CharField(max_length=4,verbose_name='桌子数目',null=True,blank=True)
+    bed = models.CharField(max_length=4,verbose_name='床数目',null=True,blank=True)
+    blower = models.CharField(max_length=4,verbose_name='风扇数量',null=True,blank=True)
+    aircon = models.CharField(max_length=4,verbose_name='空调数量',null=True,blank=True)
+    else_support = models.CharField(max_length=256,verbose_name='其他配套设施补充',null=True,blank=True)
+    last_time = models.DateField('最近更新时间',auto_now=True,null=True,blank=True)
+
     def __str__(self):
         return self.house_no.__str__()
     def __unicode__(self):
         return self.house_no
 
+class hydropower(models.Model):
+    house_no = models.ForeignKey(HouseInfo,to_field="house_no",on_delete=models.CASCADE,default=None)
+    power = models.CharField(max_length=10, verbose_name='电量', null=True, blank=True)
+    water = models.CharField(max_length=10, verbose_name='水量', null=True, blank=True)
+    last_time = models.DateField('最近更新时间', auto_now=True,null=True,blank=True)
+
+    def __str__(self):
+        return self.house_no.__str__()
+    def __unicode__(self):
+        return self.house_no
 
 class monthly_pay(models.Model):
 
@@ -53,7 +73,11 @@ class monthly_pay(models.Model):
     def __unicode__(self):
         return self.house_no.__str__()
 
-class Check_out_application(models.Model):
-    pass
-class Housing_Supporting_Facilities_application(models.Model):
-    pass
+class Application_list(models.Model):
+    type_choice = (('0','退房申请'),('1','房屋配套申请'),('2','其他申请'))
+    type = models.CharField(verbose_name='申请类型',max_length=50,choices=type_choice,default='0')
+    username = models.ForeignKey(User,verbose_name='用户名',max_length=60,on_delete=models.CASCADE,default=None)
+    content = models.CharField(verbose_name='申请内容',max_length=300,default='')
+    remark = models.CharField(verbose_name='备注',max_length=300,default='')
+    create_time = models.DateField('创建时间',auto_now_add=True)
+    last_time = models.DateField('最新编辑时间',auto_now=True)

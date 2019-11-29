@@ -50,7 +50,7 @@
                                 <th>{{i.create_time}}</th>
                                 <th>{{i.total}}</th>
                                 <th>{{i.get_payment_status_display}}</th>
-                                <th><button class="btn btn-default" type="submit">支付</button></th>
+                                <th><a href="{% url 'payment_detail' pay_id=i.id %}"><button class="btn btn-default" type="submit">支付</button></a></th>
                                     <!--支付路径 -->
                             </tr>
                         </tbody>
@@ -84,5 +84,6 @@
             {% endfor %}
         </table>
     </div>
+
 
 {% endblock content%}
