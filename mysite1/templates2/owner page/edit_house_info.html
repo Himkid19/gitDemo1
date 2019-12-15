@@ -112,15 +112,15 @@
             {% csrf_token %}
             <span class="select-label">user:</span>
             <select class="user-list" name="user-select">
-                {% if current_user%}
+                {% if current_user %}
                 <option selected="selected">{{current_user}}</option>
                 {% else %}
-                <option value="null" selected>无用户</option>
+                <option value=" " selected>无用户</option>
                 {% endif %}
                 {% for i in r_users %}
                 <option>{{i.username}}</option>
                 {% endfor %}
-                <option value="null">无用户</option>
+                <option value=" ">无用户</option>
             </select>
             <input type="submit" value="up">
         </form>

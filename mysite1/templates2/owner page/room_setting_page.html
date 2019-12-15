@@ -13,6 +13,11 @@
     outline: 0;
     }
 </style>
+{% if msg == '发布成功' %}
+    <div class="alert alert-success" role="alert">{{msg}}</div>
+{% elif msg == '发布失败' %}
+    <div class="alert alert-danger" role="alert">{{msg}}</div>
+{% endif %}
 <div class="house-list-display">
     <table class="table table-condensed">
         <thead>
@@ -33,10 +38,15 @@
                 {% endif %}
 
                     <th>{{forloop.counter}}</th>
-                    <th><a href="{% url 'edit_info' house_no=i.house_no %}">{{i.house_no}}</a></th>
+                    <th><a href="{% url 'edit_info' house_no=i.house_no %}" id="house-no">{{i.house_no}}</a></th>
                     <th>{{i.user}}</th>
                     <th>{{i.get_status_display}}</th>
+                    {% if i.status == '0' %}
+                    <!-- <th><button onclick="publich_tap2()">发布房源</button></th> -->
+                    <th><a href="{% url 'publich_info' house_no=i.house_no %}"><button onclick="publich_tap()">发布房源</button></a></th>
+                    {% else %}
                     <th></th>
+                    {% endif %}
                     </tr>
             {% endfor %}
         </tbody>
@@ -46,6 +56,28 @@
 <div>
 
 </div>
+<script>
+    function publich_tap(){
+        alert('发布信息为默认信息，请认真检查后，再手动发布！')
+        
+    }
+
+    // function publich_tap2(){
+    //     house_no= $('#house-no').text()
+    //     console.log(house_no)
+    //     data={
+    //         house_no:house_no,
+    //     }
+    //     $.post('/index/publich_info_post',data,function(res){
+    //         if(res.code=='1'){
+    //             alert('发布成功')
+    //         }
+    //         else if(res.code=='2'){
+    //             alert('发布失败')
+    //         }
+    //     })
+    // }
+</script>
 
 
 {% endblock content %}

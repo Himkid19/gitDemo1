@@ -26,7 +26,7 @@ SECRET_KEY = '=(929hchva#9kmuo=%e+-r=_n6hv91gwaye=w5ww9lpj$)r46c'
 DEBUG = True
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','49.234.55.155','0.0.0.0:8000',]
 
 
 # Application definition
@@ -138,3 +138,6 @@ MEDIA_URL = '/media/'
 
 ALIPAY_APPID = "2016092900622067"
 ALIPAY_URL = "https://openapi.alipaydev.com/gateway.do?"
+
+wx_APPID = 'wx8573d9a6e1ec3dcf'
+wx_APPSecret = '0ba9b121dcf3a652d4652f872fa87f37'

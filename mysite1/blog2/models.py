@@ -7,7 +7,9 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,related_name='profile')
     org = models.CharField("organization",max_length=60,blank=True)
     telephone = models.CharField("Telephone",max_length=50,blank=True)
-
+    openid = models.CharField('openid',max_length=64,blank=True)
+    session_key = models.CharField('session_key',max_length=64,blank=True)
+    uuid = models.CharField('uuid',max_length=64,blank=True)
     class Meta:
         verbose_name ="UserProfile"
 
@@ -74,10 +76,13 @@ class monthly_pay(models.Model):
         return self.house_no.__str__()
 
 class Application_list(models.Model):
+    status_type = (('0','待审核'),('1','审核通过'),('2','审核不通过'))
+    status = models.CharField(verbose_name='申请状态',max_length=5,choices=status_type,default='0')
+
     type_choice = (('0','退房申请'),('1','房屋配套申请'),('2','其他申请'))
     type = models.CharField(verbose_name='申请类型',max_length=50,choices=type_choice,default='0')
-    username = models.ForeignKey(User,verbose_name='用户名',max_length=60,on_delete=models.CASCADE,default=None)
+    username = models.ForeignKey(User,to_field='username',on_delete=models.CASCADE,default=None)
     content = models.CharField(verbose_name='申请内容',max_length=300,default='')
-    remark = models.CharField(verbose_name='备注',max_length=300,default='')
+    remark = models.CharField(verbose_name='备注',max_length=300,null=True,blank=True)
     create_time = models.DateField('创建时间',auto_now_add=True)
     last_time = models.DateField('最新编辑时间',auto_now=True)

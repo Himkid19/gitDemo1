@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from blog2.Views import views,Rental_page,owner_page
+from blog2.Views import views,Rental_page,owner_page,test_api
 from django.conf.urls import url,include
 from django.conf.urls.static import static
 from django.conf import settings
@@ -52,8 +52,18 @@ urlpatterns = [
     path('edit_personal/',views.edit_personal),
     path('index/room_setting/edit_info_page/update_hyd/',owner_page.update_hyd),
     path('index/room_setting/edit_info_page/update_MM/',owner_page.update_MM),
-    url(r'^index/waiting_list/user_info/username=(?P<id>\d+)',owner_page.check_people_info,name='check_user'),
+    url(r'^index/waiting_list/user_info/uid=(?P<id>\d+)',owner_page.check_people_info,name='check_user'),
     path('index/my_apply',Rental_page.my_apply),
+    path('index/post_application_info/',Rental_page.post_application_info),
+    path('index/audit_application/',owner_page.check_all_applicaion),
+    url(r'^index/audit_application/pass_audit/apply_id=(?P<id>\d+)',owner_page.pass_audit,name='pass_audit'),
+    url(r'^index/audit_application/no_pass_audit/no_apply_id=(?P<id>\d+)',owner_page.no_pass_audit,name='no_pass_audit'),
+    path('minipro/login',test_api.login),
+    path('minipro/index',test_api.index),
+    path('minipro/my_application',test_api.my_application),
+    path('minipro/history_application',test_api.history_application),
+    url(r'^index/room_setting/publich_info/house_no=(?P<house_no>\d+)',owner_page.publich_info,name='publich_info'),
+    # path('index/publich_info_post',owner_page.publich_post),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

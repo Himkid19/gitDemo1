@@ -65,5 +65,24 @@ def alipay_page(request,order_id,total):
     return redirect(pay_url)
 
 def my_apply(request):
-
+    apply_obj = Application_list.objects.all()
     return render(request,'rental page/my_application_page.html',locals())
+def post_application_info(request):
+    username = request.user.username
+    user_obj = User.objects.get(username=username)
+    type = request.POST.get('type')
+    content = request.POST.get('content')
+    remark = request.POST.get('remark')
+    try:
+        apply_obj = Application_list.objects.get(username=username)
+
+    except:
+        apply_obj = ''
+    try:
+        Application_list.objects.create(username=user_obj,type=type,content=content,remark=remark,status='0')
+        return JsonResponse({'code':'0','error_msg':''})
+
+    except Exception as e:
+        print(e)
+
+        return JsonResponse({'code':'1','error_msg':str(e)})

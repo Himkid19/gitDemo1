@@ -1,9 +1,12 @@
 from django.shortcuts import render,redirect,HttpResponse,HttpResponseRedirect
-from blog2.models import UserProfile,monthly_pay,HouseInfo,hydropower
+from blog2.models import UserProfile,monthly_pay,HouseInfo,hydropower,Application_list
 from django.contrib.auth.models import User,Group
 from datetime import datetime
 from blog2.form import set_count
 from django.http import JsonResponse
+from selenium import webdriver
+from selenium.webdriver.common.action_chains import ActionChains
+import time
 
 # 待审核列表
 def Waiting_Audit_Info(request):
@@ -117,9 +120,8 @@ def Edit_Info_page(request,house_no):
 
 def change_house_owner(request,house_no):
     new_user = request.POST.get('user-select')
-    print(new_user)
     cur_status = HouseInfo.objects.get(house_no=house_no).status
-    if new_user == 'null':
+    if new_user == ' ':
         HouseInfo.objects.filter(house_no=house_no).update(status='0',user=None)
         return redirect('/index/room_setting')
 
@@ -165,3 +167,186 @@ def update_MM(request):
         return JsonResponse({'type':'1','err_msg':''})
     except Exception as e:
         return JsonResponse({'type':'0','err_msg':e})
+
+# 审核申请页
+
+def check_all_applicaion(request):
+    apply_obj = Application_list.objects.all()
+    for i in apply_obj:
+        username = i.username
+        user_obj = User.objects.get(username=username)
+        try:
+            house_no = HouseInfo.objects.get(user=user_obj).house_no
+            try:
+                payment_obj = monthly_pay.objects.filter(house_no=house_no)
+
+            except Exception as e:
+                print(e)
+        except Exception as e:
+            print(e)
+
+    return render(request,'owner page/audit_application_page.html',locals())
+
+def pass_audit(request,id):
+    apply_obj = Application_list.objects.get(id=id)
+    apply_type = apply_obj.type
+    username = apply_obj.username
+    user = User.objects.get(username=username)
+    Application_list.objects.filter(id=id).update(status='1')
+    if apply_type == '0':
+        HouseInfo.objects.filter(user=user).update(user=None,status='0')
+    return redirect('/index/audit_application/')
+
+def no_pass_audit(request,id):
+    apply_obj = Application_list.objects.get(id=id)
+    Application_list.objects.filter(id=id).update(status='2')
+    return redirect('/index/audit_application/')
+
+def publich_info(request,house_no):
+    for i in house_no:
+        loucheng = i[0]
+    try:
+        driver = webdriver.Chrome()
+        driver.get('https://gz.58.com/house.shtml')
+        driver.find_element_by_xpath('//*[@id="commonTopbar_login"]/a[1]').click()
+        driver.find_element_by_xpath('/html/body/div[1]/div[1]/div[2]/div/img').click()
+        username_input = driver.find_element_by_xpath('//*[@id="username"]')
+        username_input.clear()
+        username_input.send_keys('15818183032')
+        pw_input = driver.find_element_by_xpath('//*[@id="password"]')
+        pw_input.clear()
+        pw_input.send_keys('a419832308')
+        driver.find_element_by_xpath('//*[@id="btn_account"]').click()
+        driver.implicitly_wait(200)
+
+        driver.find_element_by_xpath('//*[@id="fabu"]').click()
+        driver.find_element_by_xpath('/html/body/div[2]/div[2]/ul/li[1]/a').click()
+        time.sleep(2)
+
+        input_xiaoqu = driver.find_element_by_xpath('//*[@id="xiaoqu"]')
+
+        input_xiaoqu.clear()
+        input_xiaoqu.send_keys('横沙复建街住宅区')
+        time.sleep(2)
+        driver.find_element_by_xpath('//*[@id="postForm"]/div[1]/div[2]/div[1]/div[1]/div[2]/div/ul/li').click()
+
+        time.sleep(2)
+
+        input_si = driver.find_element_by_xpath('//*[@id="huxingshi"]')
+        input_si.clear()
+        input_si.send_keys('1')
+        input_area = driver.find_element_by_xpath('//*[@id="area"]')
+        input_area.clear()
+        input_area.send_keys('30')
+        input_float = driver.find_element_by_xpath('//*[@id="Floor"]')
+        input_float.click()
+        input_float.clear()
+        input_float.send_keys(loucheng)
+
+        input_louceng = driver.find_element_by_xpath('//*[@id="zonglouceng"]')
+        input_louceng.clear()
+        input_louceng.send_keys('7')
+        select_dianti = driver.find_element_by_xpath('//*[@id="postForm"]/div[1]/div[2]/div[4]/div[1]/div[4]/div[1]')
+        select_dianti.click()
+        time.sleep(2)
+        driver.find_element_by_xpath('//*[@id="postForm"]/div[1]/div[2]/div[4]/div[1]/div[4]/div[2]/ul/li[2]').click()
+        time.sleep(2)
+        input_cost = driver.find_element_by_xpath('//*[@id="MinPrice"]')
+        input_cost.clear()
+        input_cost.send_keys('300')
+        driver.find_element_by_xpath('//*[@id="postForm"]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]').click()
+        time.sleep(2)
+        driver.find_element_by_xpath('//*[@id="postForm"]/div[2]/div[2]/div[1]/div[1]/div[3]/div[2]/ul/li[2]').click()
+        time.sleep(2)
+        upload_file = driver.find_element_by_xpath('//*[@id="imgUpload"]/div/input')
+        upload_file.click()
+        time.sleep(2)
+        upload_file.send_keys(r'D:\1211test.jpg')
+        input_owner = driver.find_element_by_xpath('//*[@id="goblianxiren"]')
+        input_owner.clear()
+        input_owner.send_keys('陈')
+        driver.find_element_by_xpath('//*[@id="postForm"]/div[5]/div[2]/div[1]/div[1]/div[3]/div[2]').click()
+        time.sleep(600)
+        while '稍后认证' in driver.page_source:
+            msg='发布成功'
+            driver.quit()
+        return redirect('/index/room_setting')
+    except:
+        driver.close()
+        msg='发布失败'
+        return redirect('/index/room_setting')
+
+# def publich_post(request):
+#     house_no=request.POST.get('house_no')
+#     print(house_no)
+#     for i in house_no:
+#         louceng=i[0]
+#     print(louceng)
+    # try:
+    #     driver = webdriver.Chrome()
+    #     driver.get('https://gz.58.com/house.shtml')
+    #     driver.find_element_by_xpath('//*[@id="commonTopbar_login"]/a[1]').click()
+    #     driver.find_element_by_xpath('/html/body/div[1]/div[1]/div[2]/div/img').click()
+    #     username_input = driver.find_element_by_xpath('//*[@id="username"]')
+    #     username_input.clear()
+    #     username_input.send_keys('15818183032')
+    #     pw_input = driver.find_element_by_xpath('//*[@id="password"]')
+    #     pw_input.clear()
+    #     pw_input.send_keys('a419832308')
+    #     driver.find_element_by_xpath('//*[@id="btn_account"]').click()
+    #     driver.implicitly_wait(200)
+    #
+    #     driver.find_element_by_xpath('//*[@id="fabu"]').click()
+    #     driver.find_element_by_xpath('/html/body/div[2]/div[2]/ul/li[1]/a').click()
+    #     time.sleep(2)
+    #
+    #     input_xiaoqu = driver.find_element_by_xpath('//*[@id="xiaoqu"]')
+    #
+    #     input_xiaoqu.clear()
+    #     input_xiaoqu.send_keys('横沙复建街住宅区')
+    #     time.sleep(2)
+    #     driver.find_element_by_xpath('//*[@id="postForm"]/div[1]/div[2]/div[1]/div[1]/div[2]/div/ul/li').click()
+    #
+    #     time.sleep(2)
+    #
+    #     input_si = driver.find_element_by_xpath('//*[@id="huxingshi"]')
+    #     input_si.clear()
+    #     input_si.send_keys('1')
+    #     input_area = driver.find_element_by_xpath('//*[@id="area"]')
+    #     input_area.clear()
+    #     input_area.send_keys('30')
+    #     input_float = driver.find_element_by_xpath('//*[@id="Floor"]')
+    #     input_float.click()
+    #     input_float.clear()
+    #     input_float.send_keys(louceng)
+    #
+    #     input_louceng = driver.find_element_by_xpath('//*[@id="zonglouceng"]')
+    #     input_louceng.clear()
+    #     input_louceng.send_keys('7')
+    #     select_dianti = driver.find_element_by_xpath('//*[@id="postForm"]/div[1]/div[2]/div[4]/div[1]/div[4]/div[1]')
+    #     select_dianti.click()
+    #     time.sleep(2)
+    #     driver.find_element_by_xpath('//*[@id="postForm"]/div[1]/div[2]/div[4]/div[1]/div[4]/div[2]/ul/li[2]').click()
+    #     time.sleep(2)
+    #     input_cost = driver.find_element_by_xpath('//*[@id="MinPrice"]')
+    #     input_cost.clear()
+    #     input_cost.send_keys('300')
+    #     driver.find_element_by_xpath('//*[@id="postForm"]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]').click()
+    #     time.sleep(2)
+    #     driver.find_element_by_xpath('//*[@id="postForm"]/div[2]/div[2]/div[1]/div[1]/div[3]/div[2]/ul/li[2]').click()
+    #     time.sleep(2)
+    #     upload_file = driver.find_element_by_xpath('//*[@id="imgUpload"]/div/input')
+    #     upload_file.click()
+    #     time.sleep(2)
+    #     upload_file.send_keys(r'D:\1211test.jpg')
+    #     input_owner = driver.find_element_by_xpath('//*[@id="goblianxiren"]')
+    #     input_owner.clear()
+    #     input_owner.send_keys('陈')
+    #     driver.find_element_by_xpath('//*[@id="postForm"]/div[5]/div[2]/div[1]/div[1]/div[3]/div[2]').click()
+    #     time.sleep(600)
+    #     while '稍后认证' in driver.page_source:
+    #         return JsonResponse({'code':'1'})
+    #     return JsonResponse({'code':'0'})
+    # except:
+    # return JsonResponse({'code':'2'})
+

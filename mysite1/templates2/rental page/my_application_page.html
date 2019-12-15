@@ -1,18 +1,116 @@
 {% extends 'index.html' %}
 {% block content %}
-    <div>
-        <select name="" id="apply-type">            
-            <option value="0">退房申请</option>
-            <option value="1">配套设施申请</option>
-            <option value="2">其他申请</option>            
-        </select>
-        <button onclick="pass_key()">up</button>
+<style>
+    .my-apply-page{
+        padding: 100px;
+        padding-top: 20px;
+        overflow: auto;
+    }
+
+    .apply-title{
+        border-bottom: 1px solid;
+    }
+
+    .info-form{
+        padding-top: 30px;
+        padding-left: 20px;
+    }
+
+    .type-select{
+        padding-bottom: 30px;
+    }
+
+   
+
+    .field-list p{
+        
+        padding-top: 10px;
+        padding-bottom: 20px;
+    }
+
+    .post-button{
+        margin-left: 50%;
+        padding-top: 50px;
+        padding-bottom: 60px;
+    }
+
+</style>
+    <div class="my-apply-page">
+        <div class="apply-title">
+            <h1>用户申请</h1>
+        </div>
+        <div class="info-form">
+                <div class="type-select"><span>申请类型: </span>
+                        <select name="" id="apply-type">            
+                            <option value="0" selected>退房申请</option>
+                            <option value="1">配套设施申请</option>
+                            <option value="2">其他申请</option>            
+                        </select>
+                        
+                    </div>
+                    <div class="field-list">
+                        <p>内容描述： <textarea name="" id="apply-content" cols="40" rows="6" placeholder="请输入申请描述内容"></textarea></p>
+                        <p>备注：<textarea name="" id="remark" placeholder="请输入备注" cols="40" rows="6" ></textarea></p>
+                    </div>
+                    <div class="post-button">
+                        <button onclick="post_application()">提交申请</button>
+                    </div> 
+        </div>
+           
+            <div class="application-history-list">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>申请类型</th>
+                            <th>申请内容</th>
+                            <th>备注</th>
+                            <th>状态</th>
+                            <th>申请时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in apply_obj %}
+                        <tr>                          
+                            <th>{{i.get_type_display}}</th>
+                            <th>{{i.content}}</th>
+                            <th>{{i.remark}}</th>
+                            <th>{{i.get_status_display}}</th>
+                            <th>{{i.create_time}}</th>
+                            <th></th>
+                        </tr>
+                    </tbody>
+                        {% endfor %}
+                </table>
+            </div>
 
     </div>
 <script>
-    function pass_key(){
-        select = $('#apply-type').val()
-        console.log(select)
+    function post_application(){
+        type = $('#apply-type').val()
+        content = $('#apply-content').val()
+        remark = $('#remark').val()
+        
+        if(content == ''){
+            alert('申请内容不能未空')
+
+        }
+        else{
+            msg = {
+                type:type,
+                content:content,
+                remark:remark,
+            }
+            $.post('post_application_info/',msg,function(msg){
+                if(msg.code == '0'){
+                    alert('申请已提交')
+                }
+                else{
+                    alert('系统异常! :'+msg.error_msg)
+                }
+            })
+        }
+
     }
 </script>
 {% endblock %}
