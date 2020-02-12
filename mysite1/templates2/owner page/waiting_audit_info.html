@@ -1,8 +1,27 @@
 {% extends 'index.html' %}
-{% block content%}
+{% block content %}
+<style>
+    .waiting-list-title{
+        border-bottom: black solid 1px;
+    }
+    .already_list{
+        margin-top: 50px;
+    }
+    .rental-list-title{
+        border-bottom: black solid 1px;
+    }
+</style>
 
-<div class="waiting_list">
+<div class="crumb">
+    <ol class="breadcrumb">
+        <li><a href="/index">主页</a></li>
+        <li>租客信息管理</li>
         
+    </ol>
+</div>
+
+<div class="waiting-list">
+    <div class="waiting-list-title"><strong><h1>待审核用户列表</h1></strong></div>
     <table class="table table-hover">
             <thead>
                 <tr>
@@ -34,6 +53,7 @@
 </div>
 
 <div class="already_list">
+    <div class="rental-list-title"><strong><h1>租客列表</h1></strong></div>
     <table class="table table-hover">
             <thead>
                 <tr>

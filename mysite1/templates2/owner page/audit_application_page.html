@@ -56,6 +56,12 @@ body { margin:0px;padding:0px;}
 
    
     </style>
+<div class="crumb">
+  <ol class="breadcrumb">
+      <li><a href="/index">主页</a></li>
+      <li>申请信息管理</li>
+  </ol>
+</div>
 
 
   
@@ -73,8 +79,8 @@ body { margin:0px;padding:0px;}
     {% endfor %}
   </div>
   <div class="button-set">
-      <button onClick="hide();" style="float: left;">取消</button>
-      <button onClick="hide();">确认</button>
+      <button class="btn btn-default" onClick="hide();" style="float: left;">取消</button>
+      <button class="btn btn-default" onClick="hide();">确认</button>
   </div>
   
 </div>
@@ -82,8 +88,8 @@ body { margin:0px;padding:0px;}
   
 
     <div class="application-list">
-        <div class="title"></div>
-        <div class="display-list">
+        <div class="title" style="border-bottom: black solid 1px;" ><h1>申请信息管理</h1></div>
+        <div class="display-list" style="margin-top:20px">
             <table class="table table-sm table-dark">
                 <thead>
                   <tr>
@@ -108,14 +114,14 @@ body { margin:0px;padding:0px;}
                     <td>{{i.get_status_display}}</td>
                     <td><div class="button-set">
                       {% if i.status == '0' and i.type == '0' %}
-                      <a href="{% url 'pass_audit' i.id %}"><button type="button" class="btn btn-primary" onclick="pass_audit()">审核</button></a>
-                      <a href="{% url 'no_pass_audit' i.id %}"><button type="button" class="btn btn-primary" onclick="no_pass_audit()">审核不通过</button></a>
-                      <button type="button" class="btn btn-primary" onClick="show();">查看房费情况</button>
+                      <a href="{% url 'pass_audit' i.id %}"><button type="button" class="btn btn-success btn-sm" onclick="pass_audit()">审核</button></a>
+                      <a href="{% url 'no_pass_audit' i.id %}"><button type="button" class="btn btn-danger btn-sm" onclick="no_pass_audit()">审核不通过</button></a>
+                      <button type="button" class="btn btn-primary btn-sm" onClick="show();">查看房费情况</button>
                       {% elif i.status == '1' or i.status == '2' %}
                       <p></p>
                       {% else %}
-                      <a href="{% url 'pass_audit' i.id %}"><button type="button" class="btn btn-primary" onclick="pass_audit()">审核</button></a>
-                      <a href="{% url 'no_pass_audit' i.id %}"><button type="button" class="btn btn-primary" onclick="no_pass_audit()">审核不通过</button></a>
+                      <a href="{% url 'pass_audit' i.id %}"><button type="button" class="btn btn-success" onclick="pass_audit()">审核</button></a>
+                      <a href="{% url 'no_pass_audit' i.id %}"><button type="button" class="btn btn-danger" onclick="no_pass_audit()">审核不通过</button></a>
                       {% endif %}
                       
                       
@@ -133,23 +139,22 @@ body { margin:0px;padding:0px;}
     
 
     <script>
-      function pass_audit(){
-        var msg = "您真的确定审核通过吗？\n\n请确认！"; 
-        if (confirm(msg)==true){ 
-              return true; 
-          }else{ 
-              return false; 
-          } 
-      }
+      // function pass_audit(){ 
+      //   if (confirm("您真的确定审核通过吗？\n请确认！")==true){ 
+      //         return true; 
+      //     }else{ 
+      //         return false; 
+      //     } 
+      // }
 
-      function no_pass_audit(){
-        var msg = "您真的确定审核不通过吗？\n\n请确认！"; 
-        if (confirm(msg)==true){ 
-              return true; 
-          }else{ 
-              return false; 
-          } 
-      }
+      // function no_pass_audit(){
+        
+      //   if (confirm("您真的确定审核不通过吗？\n请确认！")==true){ 
+      //         return true; 
+      //     }else{ 
+      //         return false; 
+      //     } 
+      // }
       
       function show()  //显示隐藏层和弹出层
 {

@@ -1,4 +1,4 @@
-{% load staticfiles %}
+<!-- {% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,4 +42,133 @@
 </div>
 
 </body>
+</html> -->
+<!--
+	Author: W3layouts
+	Author URL: http://w3layouts.com
+	License: Creative Commons Attribution 3.0 Unported
+	License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zxx">
+<!-- Head -->
+
+<head>
+    <title>Welcome!to Rental Manager system</title>
+    <!-- Meta-Tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Key Login Form a Responsive Web Template, Bootstrap Web Templates, Flat Web Templates, Android Compatible Web Template, Smartphone Compatible Web Template, Free Webdesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola Web Design">
+    <script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+    <!-- //Meta-Tags -->
+    <!-- Index-Page-CSS -->
+    <link rel="stylesheet" href="{% static 'css/login_style.css' %}" type="text/css" media="all">
+    <!-- //Custom-Stylesheet-Links -->
+    <!--fonts -->
+    <!-- //fonts -->
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css'%}" type="text/css" media="all">
+    <!-- //Font-Awesome-File-Links -->
+	
+	<!-- Google fonts -->
+	<link href="//fonts.googleapis.com/css?family=Quattrocento+Sans:400,400i,700,700i" rel="stylesheet">
+	<link href="//fonts.googleapis.com/css?family=Mukta:200,300,400,500,600,700,800" rel="stylesheet">
+	<!-- Google fonts -->
+	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+    <style type="text/css" src="{% static 'bootstrap/css/bootstrap.css' %}"></style>
+    <!-- <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script> -->
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<!-- //Head -->
+<!-- Body -->
+
+<body>
+
+<section class="main">
+	{% csrf_token %}
+	<div class="layer">
+		
+		<div class="bottom-grid">
+			<div class="logo">
+				<h1> <a href="/index"><span class="fa fa-key"></span> Renal manager</a></h1>
+			</div>
+			<div class="links">
+				<ul class="links-unordered-list">
+					<li class="active">
+						<a href="/login" class="">Login</a>
+					</li>
+					
+					<li class="">
+						<a href="/register/" class="">Register</a>
+					</li>
+					
+				</ul>
+			</div>
+		</div>
+		<div class="content-w3ls">
+			<div class="text-center icon">
+				{% if message %}
+					<div class="alert alert-warning">{{message}}</div>
+				{% else %}
+					<span class="fa fa-html5"></span>
+				{% endif %}
+			</div>
+			<div class="content-bottom">
+				<form action="/login/" method="post">
+					<div class="field-group">
+						<span class="fa fa-user" aria-hidden="true"></span>
+						<div class="wthree-field">
+							
+							{{login.username}}
+						</div>
+					</div>
+					<div class="field-group">
+						<span class="fa fa-lock" aria-hidden="true"></span>
+						<div class="wthree-field">
+							{{login.password}}
+						</div>
+					
+					</div>
+					<div class="wthree-field">
+						<button type="submit" class="btn">Get Started</button>
+					</div>
+					<ul class="list-login">
+						<li class="switch-agileits">
+							<label class="switch">
+								<input type="checkbox">
+								<span class="slider round"></span>
+								keep Logged in
+							</label>
+						</li>
+						<li>
+							<a href="#" class="text-right">forgot password?</a>
+						</li>
+						<li class="clearfix"></li>
+					</ul>
+					<ul class="list-login-bottom">
+						<li class="">
+							<a href="/Register.html" class="">Create Account</a>
+						</li>
+						<li class="">
+							<a href="#" class="text-right">Need Help?</a>
+						</li>
+						<li class="clearfix"></li>
+					</ul>
+				</form>
+			</div>
+		</div>
+		
+    </div>
+</section>
+
+</body>
+<!-- //Body -->
 </html>

@@ -1,13 +1,22 @@
 from django.test import TestCase
 import time,requests,pyDes
 # Create your tests here.
-url = "https://openapi.fang.com/unity/authenticate"
+import sys
+import json
 
+url = "https://api.yonyoucloud.com/apis/dst/mobilemessage/sendmessage"
+
+headers = {
+    'authoration':'apicode',
+    'apicode':'ab0e67a5eb134e6d87863bbf97afb164',
+    'Content-Type':'application/json',
+}
 data = {
-    # 'userName':'homkid19',
-    # 'pwd':'1496829295748',
-    # 'keyId':18661740
+    'msg':'this is test msg',
+    'phone':'15818183032',
 }
 
-j = requests.post(url=url,data=data)
+json.dumps(data)
+
+j = requests.post(url=url,data=data,headers=headers)
 print(j.json())

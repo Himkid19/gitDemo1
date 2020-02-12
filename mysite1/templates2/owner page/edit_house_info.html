@@ -93,12 +93,20 @@
         }
 
     </style>
+    <div class="crumb">
+        <ol class="breadcrumb">
+            <li><a href="/index">主页</a></li>
+            <li><a href="/index/room_setting">房费信息管理</a></li>
+            <li>{{house_no}}</li>
+        </ol>
+    </div>
     {% if msg %}
     <div class="alert alert-danger" role="alert">
         <a href="#" class="alert-link">{{msg}}</a>
     </div>
     {% endif %}
-    <div class="title-display">房号为<strong> {{house_no}} </strong>的房屋信息如下：</div>
+    
+    <div class="title-display" style="margin-top: 8px;">房号为<strong> {{house_no}} </strong>的房屋信息如下：</div>
     <div class="house-content">
         <div class="Stationary-configuration-title"><h1>固定配套设施</h1></div>
         <div class="house-detail">

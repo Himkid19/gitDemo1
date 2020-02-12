@@ -64,6 +64,8 @@ urlpatterns = [
     path('minipro/history_application',test_api.history_application),
     url(r'^index/room_setting/publich_info/house_no=(?P<house_no>\d+)',owner_page.publich_info,name='publich_info'),
     # path('index/publich_info_post',owner_page.publich_post),
+    path('test_jmeter',views.test_jmeter),
+    url(r'^index/my_apply/cancel_app/app_id=(?P<id>\d+)',Rental_page.cancel_app,name='cancel_app'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -40,8 +40,19 @@
             <a href="#" class="alert-link">{{message}}</a>
         </div>
     {% endif %}
+    <div class="crumb">
+        <ol class="breadcrumb">
+            <li><a href="/index">主页</a></li>
+            <li><a href="/index/waiting_list">租客信息管理</a></li>
+            {% if user_obj %}
+                <li>{{user_obj.user}}</li>
+            {% elif user_obj2 %}
+                <li>{{user_obj2.username}}</li>
+            {% endif %}
+        </ol>
+    </div>
     <div class="user_info_page">
-        <div class="back_button"><a href="/index/waiting_list"><button><span class="glyphicon glyphicon-arrow-left"></span>  back</button></a></div>
+        
         <div class="user-content-display"> 
             <div class="user-title"><strong>用户详情</strong></div>
             <div class="user-detail-content">

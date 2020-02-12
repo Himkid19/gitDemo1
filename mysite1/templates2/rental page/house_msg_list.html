@@ -1,16 +1,32 @@
 {% extends "index.html" %}
 {% block content %}
 
-    <table class="table table-hover">
+<div class="crumb">
+    <ol class="breadcrumb">
+        <li><a href="/index">主页</a></li>
+        <li>房屋信息查询</li>
+        
+    </ol>
+  </div>
+  <div class="house-info-title" >
+      <h1>房屋信息查询</h1>
+      <div class="alert alert-info" role="alert"><strong>提示！</strong>特别标识出来的是租客自己所属房屋</div>
+        
+  </div>
+    <table class="table table-hover" style="margin-top: 20px;border-top: darkgray solid 0.5px;">
         <thead>
             <tr>
                 <th>id</th>
-                <th>NO</th>
-                <th>status</th>
+                <th>房号</th>
+                <th>房屋状态</th>
             </tr>
         <tbody>
             {% for i in house_list %}
+            {% if i.house_no == user_own_house %}
+            <tr class="info">
+            {% else %}
             <tr>
+            {% endif %}    
                <th>{{i.id}}</th>
                <th><a href="{% url 'detail' i.id %}">{{i.house_no}}</a></th>
                <th>{{ i.get_status_display }}</th>    

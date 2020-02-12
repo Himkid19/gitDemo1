@@ -62,6 +62,12 @@ def choice_count(request):
 
 def setting_count_page(request,house_no):
     status = HouseInfo.objects.get(house_no=house_no).status
+    try:
+        water = hydropower.objects.get(house_no=house_no).water
+        power = hydropower.objects.get(house_no=house_no).power
+    except:
+        water = ''
+        power = ''
     if request.method == 'POST':
 
         count_set = set_count(request.POST)
@@ -77,10 +83,11 @@ def setting_count_page(request,house_no):
             count_dict = count_set.cleaned_data
             house_no_obj = HouseInfo.objects.get(house_no=house_no)
             try:
-                monthly_pay.objects.create(**count_dict,house_no=house_no_obj,total=total)
+                monthly_pay.objects.create(**count_dict,house_no=house_no_obj,total=total,payment_status='0')
                 print('create success')
             except Exception as e:
                 print(e)
+                print('error')
             return redirect('/index/choice_payment/set_payment/house_no='+house_no)
     else:
         count_set = set_count()

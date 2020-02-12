@@ -10,12 +10,21 @@
     }
 
 </style>
+<div class="crumb">
+  <ol class="breadcrumb">
+      <li><a href="/index">主页</a></li>
+      <li><a href="/index/choice_payment">房费信息管理</a></li>
+      <li>{{house_no}}</li>
+  </ol>
+</div>
+<div class="payment-title" style="padding: 5px;border-bottom: 1px solid black;"> 
+  <h1>发布房费/设置房费款项</h1>
+  <p>需付费房号为 :<strong>{{house_no}}</strong>,本月采集水量为 <strong>{{water}}</strong>吨,电量为 <strong>{{power}}</strong>度，可根据采集水电量进行对应款项设定。</p>
+</div>
+    
 
-    <h1>set payment</h1>
-    <p>{{house_no}}</p>
-
-
-<form class="form-horizontal" method="post">
+<div class="payment-form" style="margin-top: 15px;">
+  <form class="form-horizontal" method="post">
 
     {% csrf_token %}
     {% for i in count_set %}
@@ -32,6 +41,11 @@
     </div>
   </div>
     {% endfor %}
+  <div class="tips-links" style="margin-left: 20px;">
+    <p><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span><span class="sr-only"></span>  水电价参考链接</p>
+    <a href="http://gz.bendibao.com/news/2012713/content101545.shtml" target="view_window">广州阶梯电价</a>
+    <a href="http://wenda.bendibao.com/live/2019711/34821.shtm" target="view_window">广州水分收费标准</a>
+  </div>
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
       {% if status != '0' %}
@@ -41,6 +55,8 @@
   </div>
 
 </form>
+</div>
+
 <h1>History</h1>
 <table class="table table-hover">
   <thead>
@@ -52,19 +68,19 @@
     </tr>
   </thead>
   <tbody>
-    {% for i in count_setting_record %}
-    <tr>
-        <th>{{i.total}}</th>
-        <th>{{i.get_payment_status_display}}</th>
-        <th>{{i.create_time}}</th>
-        <!-- 未支付的设置金额记录才能被删除 -->
-        {% if i.payment_status == '0' %}
-          <th><a href="{% url 'del_record' id=i.id house_no=house_no %}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></th>
-        {% endif %}
-        </tr>
-    {% endfor %}
+      {% for i in count_setting_record %}
+      <tr>
+          <th>{{i.total}}</th>
+          <th>{{i.get_payment_status_display}}</th>
+          <th>{{i.create_time}}</th>
+          <!-- 未支付的设置金额记录才能被删除 -->
+          {% if i.payment_status == '0' %}
+            <th><a href="{% url 'del_record' id=i.id house_no=house_no %}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></th>
+          {% endif %}
+          </tr>
+      {% endfor %}   
   </tbody>
-
+  
 </table>
 <script>
 </script>

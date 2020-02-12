@@ -13,13 +13,20 @@
     .startpages{
         width:auto;
         height:80px;
-        background:#00A2CA;
+        background:gray;
         margin:0 auto;
+        box-shadow: 0px 0px 20px -10px rgba(0, 0, 0, 0.3);
     }
     .home{
         float:left;
         margin:20px auto;
         font-size:large;
+    }
+    .home p{
+        margin-top: 5px;
+        margin-left: 30px;
+        
+        
     }
     .msg{
         margin:10px 10px 30px 30px;
@@ -30,41 +37,37 @@
     .holderdisplay{
         width:100%;
         height:60px;
-        background:green;
+        background:gray;
         margin:0 auto;
     }
 
     .holderdisplay li{
         display:inline;
         height:60px;
+        color: white;
 
     }
 
     .holderdisplay li a{display:inline-block; padding:0 20px; height:60px; line-height:60px;
- color:#FFF; font-family:"\5FAE\8F6F\96C5\9ED1"; font-size:16px} 
-    .holderdisplay li a:hover{background:#0095BB}
+ color:#FFF; font-family:"\5FAE\8F6F\96C5\9ED1"; font-size:16px;border-radius: 5px;} 
+    .holderdisplay li a:hover{background:darkgray}
     
-    .
+    
 
-    .menu{
+    /* .menu{
         height:500px;
         width:100px;
         
         margin-top:10px;
         border:1px solid;
         
-    }
+    } */
 
-<!--    .content{-->
-<!--        float:left;-->
-<!--        margin-top:10px;-->
-<!--        margin-left:10px;-->
-<!--        -->
-<!--        width:100%;-->
-<!--        height:500px;-->
-<!--        border:1px solid;-->
-<!--        -->
-<!--    }-->
+.content{
+    padding-top: 5px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
 
 <!--    .footer{-->
 <!--        height:10px;-->
@@ -96,14 +99,16 @@
 </head>
 <body>
     
+    
+    
     <div class="while-leader">
         <div class="startpages" id="leader-page">
                 <div class="home">
-                    <p><a href="#">Home</a></p>
+                    <p><a href="/index" style="color: white;">Rental Manager</a></p>
                 </div>
                 <div class="msg">
                     <ul class="holderdisplay" >
-                        <li>welcome, <a href="/index/normal_edit">{{request.user.username}}!-{{group_name}}</a></li>
+                        <li><strong>Welcome</strong>, <a href="/index/normal_edit">{{org}}--{{group_name}}-{{request.user.username}}</a></li>
                         {% csrf_token %}
                     {% if request.user.is_authenticated %}
                         <li><a href="/log_out/">登出</a></li>
@@ -119,42 +124,41 @@
             <div class="menu">
                 {% if group_name == '租客' %}
                 <ul class="nav nav-tabs" >
-                        <li  role="presentation" ><a href="/index/my_payment">cost</a></li>
-                        <li  role="presentation" ><a href="/index/house_list">list</a></li>
+                        <li  role="presentation" ><a href="/index/my_payment">房费查询</a></li>
+                        <li  role="presentation" ><a href="/index/house_list">房屋消息查询</a></li>
                         <li  role="presentation" ><a href="/index/chat_page">在线反馈</a></li>
-                        <li  role="presentation" ><a href="/index/my_apply">申请</a></li>
-                        <li role="presentation" ><a href="#">help</a></li>
+                        <li  role="presentation" ><a href="/index/my_apply">我的申请</a></li>
+                        
                     </ul>
                 {% elif group_name == '房东' %}
     
                     <ul class="nav nav-tabs" >
-                        <li  role="presentation" ><a href="/index/waiting_list">owner test</a></li>
-                        <li  role="presentation" ><a href="/index/choice_payment">Set monthly payment</a></li>
-                        <li role="presentation" ><a href="/index/room_setting">Room Setting</a></li>
-                        <li  role="presentation" ><a href="/index/chat_page">在线反馈</a></li>
-                        <li role="presentation" ><a href="/index/audit_application">租客申请</a></li>
-                        <li role="presentation" ><a href="#">help</a></li>
+                        <li  role="presentation" ><a href="/index/waiting_list">租客信息管理</a></li>
+                        <li  role="presentation" ><a href="/index/choice_payment">房费信息管理</a></li>
+                        <li role="presentation" ><a href="/index/room_setting">房屋信息管理</a></li>
+                        <li  role="presentation" ><a href="/index/chat_page">在线聊天</a></li>
+                        <li role="presentation" ><a href="/index/audit_application">租客申请信息管理</a></li>
+                        
                     </ul>
                 {% else %}
                     <p>waiting for allowing....</p>
                 {% endif %}
             </div>
-            <div class="crumb">
-                <ol class="breadcrumb">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Library</a></li>
-                    <li class="active">Data</li>
-                </ol>
-            </div>
-    </div>
+            
+    
+
         
     <div class="content">
 
         {% block content %}
             <div class="jumbotron">
-                <h1>Hello, world!</h1>
-                  <p>...</p>
-                  <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+                <h1>欢迎使用<strong>出租屋管理系统</strong>!</h1>
+                  <p>
+                      <ol>
+                          <li>普通游客申请租客身份，等待屋主审核</li>
+                          <li>屋主分配房屋后即可使用本系统！</li>
+                      </ol>
+                  </p>
             </div>
         {% endblock content %}
     </div>
@@ -162,8 +166,6 @@
 <!--        <p>design by Homkid</p>-->
 <!--    </div>-->
 
-<script>
-
-</script>
+<script src="{% static 'JS/script.js' %}"></script>
 </body>
 </html>

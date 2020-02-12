@@ -41,7 +41,7 @@
     }
 
     .main{
-        border-left: 0.5px solid;
+        border-left: 0.5px solid darkgray;
         float: left;
         width: 1000px;
         top: 0;
@@ -54,6 +54,7 @@
         height: 700px;
         padding: 20px;
         padding-inline-start: 20px;
+        
     }
     .people-title{
         margin-left: 20px;
@@ -164,8 +165,8 @@
                     <p>电话：  <input id="phone_no" type="text" placeholder="请输入电话" value="{{user_obj.telephone}}"></p>
                 </div>
                 <div class="info-button-set">
-                    <div class="save-button"><input type="button" value="保存" onclick="edit_personal_inf()"></div>
-                    <div class="back-button"><a href="/index"><input type="button" value="返回"></a></div>
+                    <div class="save-button"><input type="button" class="btn btn-default" value="保存" onclick="edit_personal_inf()"></div>
+                    <div class="back-button"><a href="/index"><input class="btn btn-default" type="button" value="返回"></a></div>
                 </div>
             </div>
             <div class="forget-pw-page" id="forget-pw-page">
@@ -178,7 +179,7 @@
                         <p>第二次密码： <input id="newpw2" type="password" placeholder="输入第二次密码"></p>
                     </div>
                     <div class="reset-button-set">
-                        <input style="float:left;margin-left: 350px;" type="button" value="修改" onclick="re_set_pw()">
+                        <input style="float:left;margin-left: 350px;" type="button" class="btn btn-default" value="修改" onclick="re_set_pw()">
                     </div>
             </div>
             <div class="help-page" id="help-page">

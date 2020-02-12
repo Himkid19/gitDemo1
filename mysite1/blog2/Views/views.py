@@ -41,22 +41,35 @@ def login(request):
         if login.is_valid():
             username = login.cleaned_data.get('username')
             password = login.cleaned_data.get('password')
-            user = auth.authenticate(username=username,password=password)
+            exist_user=User.objects.get(username=username)
 
-            if user and user.is_active :
-                auth.login(request,user)
-                return redirect('/index/')
+            if exist_user:
+                user = auth.authenticate(username=username, password=password)
+
+                if user and user.is_active:
+                    auth.login(request, user)
+                    return redirect('/index/')
+                else:
+                    message = "password is wrong!"
+                    print(message)
+                    return render(request, 'login.html', locals())
             else:
-                message = "password is wrong!"
-                return render(request,'login.html',locals())
+                message = "User not exist!"
+                print(message)
+                return render(request, 'login.html', locals())
+
+
     else:
         login = LoginForm()
+
     return render(request,"login.html",locals())
 
 
 
 def index(request):
     if request.user.is_authenticated:
+
+
         return render(request,'index.html')
     else:
         return redirect("/login/")
@@ -72,7 +85,6 @@ def forget_password(request):
     if request.method == "GET":
         forget_password = forget_PW()
         return render(request, 'forget_pw.html', locals())
-
     if request.method == "POST":
         forget_password = forget_PW(request.POST)
         print(forget_password.errors)
@@ -195,4 +207,14 @@ def edit_personal(request):
             return JsonResponse({'type':'1','error_msg':''})
     except Exception as e:
         print(e)
-        return JsonResponse({'type':'0','error_msg':'找不到用户，系统异常'})
+        return JsonResponse({'type':'0','error_msg':'找不到用户，系统异常'},content_type="application/json,charset=utf-8")
+
+def test_jmeter(request):
+    a=request.POST.get('a')
+    b=request.POST.get('b')
+    print(a,b)
+    if request.method == 'GET':
+        return JsonResponse({'code':'1','msg':'fail'})
+    else:
+        return JsonResponse({'code':'0','msg':'success','sum':a+b},content_type="application/json,charset=utf-8")
+

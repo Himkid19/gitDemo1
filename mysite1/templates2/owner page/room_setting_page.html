@@ -18,6 +18,13 @@
 {% elif msg == '发布失败' %}
     <div class="alert alert-danger" role="alert">{{msg}}</div>
 {% endif %}
+<div class="crumb">
+    <ol class="breadcrumb">
+        <li><a href="/index">主页</a></li>
+        <li>房屋信息管理</li>
+    </ol>
+</div>
+<div class="house-list-title"><h1>房屋信息管理</h1></div>
 <div class="house-list-display">
     <table class="table table-condensed">
         <thead>
@@ -32,9 +39,9 @@
         <tbody>
             {% for i in house_gather %}
                 {% if i.status == '0' %}
-                    <tr class="info">
+                    <tr class="info" style="text-align: center;">
                 {% else %}
-                    <tr class="success">
+                    <tr class="success" style="text-align: center;" >
                 {% endif %}
 
                     <th>{{forloop.counter}}</th>
@@ -43,7 +50,7 @@
                     <th>{{i.get_status_display}}</th>
                     {% if i.status == '0' %}
                     <!-- <th><button onclick="publich_tap2()">发布房源</button></th> -->
-                    <th><a href="{% url 'publich_info' house_no=i.house_no %}"><button onclick="publich_tap()">发布房源</button></a></th>
+                    <th><a href="{% url 'publich_info' house_no=i.house_no %}"><button type="button"  class="btn btn-info btn-sm"  onclick="publich_tap()">发布房源</button></a></th>
                     {% else %}
                     <th></th>
                     {% endif %}

@@ -1,17 +1,39 @@
 {% extends "index.html" %}
 
 {% block content %}
-<div>
-    <button type="button"  onclick="javascript:history.back(-1);"><span class="glyphicon glyphicon-chevron-left"></span></button>
+<style>
+    .house-detail{
+        padding-left: 30px;
+        font-size: large;
+    }
+    .house-detail-field{
+        padding-top: 15px;
+        padding-left: 60px;
+    }
+    .house-detail-field p{
+        font-size: large;
+    }
+
+</style>
+<ol class="breadcrumb">
+    <li><a href="/index">主页</a></li>
+    <li><a href="/index/house_list">房屋信息查询</a></li>
+    <li>{{detail.house_no}}</li>
+</ol>
 </div>
-   <div>
-        <h1>房号：{{detail.house_no}}</h1>
-        <h1>大小：{{detail.width}}</h1>
-        <h1>高度：{{detail.height}}</h1>
-        <h1>描述：{{detail.direction}}</h1>
-        <h1><img width="50%" height="50%" src="/media/{{detail.house_image}}"></h1>
+
+   <div class="house-detail">
+       <div class="house-detail-title" style="margin-left: 30px;border-bottom: solid 0.5px darkgray;margin-right: 70px;"><h1>房屋详情</h1></div>
+        <div class="house-detail-field">
+            <p><strong>房号：</strong> {{detail.house_no}}</p>
+        <p><strong>大小：</strong> {{detail.width}}平方</p>
+        <p><strong>高度：</strong>{{detail.height}}米</p>
+        <p><strong>描述：</strong>{{detail.direction}}</p>
+        <p><strong>房屋图片：</strong></p>
+        <img class="img-rounded" width="600px" height="300px" src="/media/{{detail.house_image}}" onerror="">
+        </div>
    </div>
 
 
 
-{% endblock content %}
+{% endblock %}

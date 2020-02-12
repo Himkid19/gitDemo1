@@ -7,20 +7,27 @@
 
         .payment-content{
             height:400px;
-            border:1px solid;
+            border:darkgray 0.5px solid;
             margin:20px 50px 50px;
-
+            overflow: auto;
         }
         .display-text{
             text-align:center;
             margin-top:135px;
         }
         .payment-history{
+            overflow: auto;
             margin:10px 50px ;
-
-            border:1px solid;
+            border:darkgray 0.5px solid;
         }
     </style>
+    <div class="crumb">
+        <ol class="breadcrumb">
+            <li><a href="/index">主页</a></li>
+            <li>房费查询/支付</li>
+            
+        </ol>
+    </div>
     {% if msg %}
     <div></div><div class="alert alert-danger" role="alert">
         <a href="#" class="alert-link">{{msg}}</a>
@@ -29,8 +36,10 @@
     <div class="payment-page-title">
         <div class="my-house-no">您的房号为<strong>{{house_obj.house_no}}</strong>,以下为您的房费信息。</div>
     </div>
+    <div class="waiting-pay-list"><h1>待支付房费列表</h1></div>
     <div class="payment-content">
         <div class="tips-data-lost">
+            
             {% if not payment_check  %}
                 <div class="display-text">no data in record</div>
             {% else %}
@@ -61,8 +70,8 @@
                 </table>
         </div>
     </div>
-    <div class="payment-history">
-
+    <div class="history"><h1>历史支付列表</h1></div>
+    <div class="payment-history" style="margin-top: 15px;">
         <table class="table table-hover">
             <thead>
                 <tr>

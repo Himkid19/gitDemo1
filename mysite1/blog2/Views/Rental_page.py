@@ -6,8 +6,17 @@ from mysite1 import settings
 from alipay import AliPay
 import os
 
+def check_session(request):
+    if not request.user:
+        return redirect('login')
 
 def display_house_list(request):
+
+    curr_user = request.user
+    try:
+        user_own_house = HouseInfo.objects.get(user=curr_user).house_no
+    except:
+        user_own_house = ''
     house_list = HouseInfo.objects.all()
     return render(request,'rental page/house_msg_list.html',locals())
 
@@ -67,6 +76,7 @@ def alipay_page(request,order_id,total):
 def my_apply(request):
     apply_obj = Application_list.objects.all()
     return render(request,'rental page/my_application_page.html',locals())
+
 def post_application_info(request):
     username = request.user.username
     user_obj = User.objects.get(username=username)
@@ -86,3 +96,7 @@ def post_application_info(request):
         print(e)
 
         return JsonResponse({'code':'1','error_msg':str(e)})
+
+def cancel_app(request,id):
+    Application_list.objects.filter(id=id).delete()
+    return redirect('/index/my_apply')

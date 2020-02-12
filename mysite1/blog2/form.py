@@ -25,9 +25,13 @@ class RegisterForm(forms.Form):
         return password2
 
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=60,label="Username",required=True,error_messages={'required':'this is required'})
-    password = forms.CharField(max_length=50,label="Password",required=True,widget=forms.PasswordInput,)
-    captcha = CaptchaField(label='验证码')
+    username = forms.CharField(max_length=60,label="Username",required=True,error_messages={'required':'this is required'},widget=forms.TextInput(attrs={'placeholder': 'Username',
+                                                             'name': 'text1',
+                                                             'id': 'text1',
+                                                             }))
+    password = forms.CharField(max_length=50,label="Password",required=True,widget=forms.PasswordInput(attrs={'placeholder': 'Password','name': 'password','id': 'myInput', }))
+    # captcha = CaptchaField(label='验证码')
+
 
 
     def clean_username(self):

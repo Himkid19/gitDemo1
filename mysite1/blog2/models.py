@@ -3,9 +3,21 @@ from django.contrib.auth.models import User,Group
 # Create your models here.
 from django.utils import timezone
 
+
+class organization(models.Model):
+    loaction = models.CharField('Loaction',max_length=60,blank=True)
+    class Meta:
+        verbose_name ="organization"
+
+    def __str__(self):
+        return self.loaction.__str__()
+
+    def __unicode__(self):
+        return self.loaction
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,related_name='profile')
-    org = models.CharField("organization",max_length=60,blank=True)
+    org = models.ForeignKey(organization,verbose_name='org',on_delete=models.CASCADE)
     telephone = models.CharField("Telephone",max_length=50,blank=True)
     openid = models.CharField('openid',max_length=64,blank=True)
     session_key = models.CharField('session_key',max_length=64,blank=True)
